@@ -1,0 +1,12 @@
+# Add the worlds you want Far Lands to generate on
+# Will work for Overworld, Nether and End world types
+# If you want to disable it later you can just change enabled to false
+# Example config set up:
+#
+# worlds:
+#   world1:
+#     enabled: true
+#   world1_nether:
+#     enabled: true
+
+worlds:
