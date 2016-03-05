@@ -1,10 +1,10 @@
-package com.minefit.XerxesTireIron.FarLandsAgain.v1_8_R2;
+package com.minefit.XerxesTireIron.FarLandsAgain.v1_9_R1;
 
 import java.util.Random;
 
-import net.minecraft.server.v1_8_R2.MathHelper;
-import net.minecraft.server.v1_8_R2.NoiseGenerator;
-import net.minecraft.server.v1_8_R2.NoiseGeneratorPerlin;
+import net.minecraft.server.v1_9_R1.MathHelper;
+import net.minecraft.server.v1_9_R1.NoiseGenerator;
+import net.minecraft.server.v1_9_R1.NoiseGeneratorPerlin;
 
 public class NoiseGeneratorOctaves extends NoiseGenerator {
     private NoiseGeneratorPerlin[] a;

@@ -26,8 +26,7 @@ import net.minecraft.server.v1_8_R1.WorldGenStronghold;
 import net.minecraft.server.v1_8_R1.WorldGenVillage;
 import net.minecraft.server.v1_8_R1.WorldType;
 
-public class FLAChunkProviderGenerate extends ChunkProviderGenerate implements IChunkProvider
-{
+public class FLAChunkProviderGenerate extends ChunkProviderGenerate implements IChunkProvider {
     Logger logger = Logger.getLogger("Minecraft");
     private Random h;
     private NoiseGeneratorOctaves i;
@@ -58,8 +57,7 @@ public class FLAChunkProviderGenerate extends ChunkProviderGenerate implements I
     double[] f;
     double[] g;
 
-    public FLAChunkProviderGenerate(World world, long i, boolean flag, String s)
-    {
+    public FLAChunkProviderGenerate(World world, long i, boolean flag, String s) {
         super(world, i, flag, s);
         this.s = Blocks.WATER;
         this.t = new double[256];

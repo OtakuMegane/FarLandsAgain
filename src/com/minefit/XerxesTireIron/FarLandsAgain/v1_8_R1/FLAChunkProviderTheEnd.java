@@ -199,4 +199,3 @@ public class FLAChunkProviderTheEnd extends ChunkProviderTheEnd implements IChun
         return this.getOrCreateChunk(blockposition.getX() >> 4, blockposition.getZ() >> 4);
     }
 }
-

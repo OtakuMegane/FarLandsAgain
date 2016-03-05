@@ -6,8 +6,7 @@ import net.minecraft.server.v1_8_R1.MathHelper;
 import net.minecraft.server.v1_8_R1.NoiseGenerator;
 import net.minecraft.server.v1_8_R1.NoiseGeneratorPerlin;
 
-public class NoiseGeneratorOctaves extends NoiseGenerator
-{
+public class NoiseGeneratorOctaves extends NoiseGenerator {
     private NoiseGeneratorPerlin[] a;
     private int b;
 
@@ -41,8 +40,8 @@ public class NoiseGeneratorOctaves extends NoiseGenerator
             d4 -= i2;
             d6 -= j2;
 
-            //i2 %= 16777216L;
-            //j2 %= 16777216L;
+            // i2 %= 16777216L;
+            // j2 %= 16777216L;
 
             d4 += i2;
             d6 += j2;
