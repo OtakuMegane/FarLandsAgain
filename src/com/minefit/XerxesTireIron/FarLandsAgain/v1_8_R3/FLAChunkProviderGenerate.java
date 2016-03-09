@@ -1,7 +1,6 @@
 package com.minefit.XerxesTireIron.FarLandsAgain.v1_8_R3;
 
 import java.util.Random;
-import java.util.logging.Logger;
 
 import net.minecraft.server.v1_8_R3.BiomeBase;
 import net.minecraft.server.v1_8_R3.Block;
@@ -26,7 +25,6 @@ import net.minecraft.server.v1_8_R3.WorldGenVillage;
 import net.minecraft.server.v1_8_R3.WorldType;
 
 public class FLAChunkProviderGenerate extends ChunkProviderGenerate implements IChunkProvider {
-    Logger logger = Logger.getLogger("Minecraft");
     private Random h;
     private NoiseGeneratorOctaves i;
     private NoiseGeneratorOctaves j;
