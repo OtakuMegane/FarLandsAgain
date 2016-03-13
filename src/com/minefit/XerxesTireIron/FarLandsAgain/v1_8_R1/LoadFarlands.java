@@ -1,7 +1,5 @@
 package com.minefit.XerxesTireIron.FarLandsAgain.v1_8_R1;
 
-import java.util.logging.Logger;
-
 import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.craftbukkit.v1_8_R1.CraftWorld;
@@ -17,7 +15,6 @@ import net.minecraft.server.v1_8_R1.IChunkProvider;
 
 public class LoadFarlands {
     private FarLandsAgain plugin;
-    private Logger logger = Logger.getLogger("Minecraft");
     private World world;
     private WorldServer nmsWorld;
     private Messages messages;

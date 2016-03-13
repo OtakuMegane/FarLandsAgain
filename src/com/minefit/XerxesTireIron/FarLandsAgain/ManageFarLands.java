@@ -1,7 +1,6 @@
 package com.minefit.XerxesTireIron.FarLandsAgain;
 
 import org.bukkit.World;
-import org.bukkit.World.Environment;
 
 public class ManageFarLands {
 
