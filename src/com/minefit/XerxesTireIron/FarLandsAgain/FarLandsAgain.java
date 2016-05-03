@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldInitEvent;
+import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class FarLandsAgain extends JavaPlugin implements Listener {
@@ -47,6 +48,12 @@ public class FarLandsAgain extends JavaPlugin implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onWorldInit(WorldInitEvent event) {
+        World world = event.getWorld();
+        prepareWorld(world);
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onWorldLoad(WorldLoadEvent event) {
         World world = event.getWorld();
         prepareWorld(world);
     }
