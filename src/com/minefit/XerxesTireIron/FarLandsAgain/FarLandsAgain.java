@@ -25,13 +25,15 @@ public class FarLandsAgain extends JavaPlugin implements Listener {
         this.getServer().getPluginManager().registerEvents(this, this);
         this.manageWorlds = new HashMap<String, ManageFarLands>();
 
-        if (!version.equals("v1_8_R1") && !version.equals("v1_8_R2") && !version.equals("v1_8_R3") && !version.equals("v1_9_R1")) {
+        if (!version.equals("v1_8_R1") && !version.equals("v1_8_R2") && !version.equals("v1_8_R3")
+                && !version.equals("v1_9_R1") && !version.equals("v1_9_R2")) {
             messages.incompatibleVersion();
         } else {
             messages.pluginReady();
         }
 
-        // Catches the /reload command or other things that may bypass the WorldInitEvent
+        // Catches the /reload command or other things that may bypass the
+        // WorldInitEvent
         for (World world : Bukkit.getWorlds()) {
             prepareWorld(world);
         }
@@ -39,7 +41,7 @@ public class FarLandsAgain extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
-        for(String worldName : this.manageWorlds.keySet()) {
+        for (String worldName : this.manageWorlds.keySet()) {
             this.manageWorlds.get(worldName).restoreGenerator();
         }
 
@@ -61,8 +63,7 @@ public class FarLandsAgain extends JavaPlugin implements Listener {
     public void prepareWorld(World world) {
         String worldName = world.getName();
 
-        if (!this.getConfig().getBoolean("worlds." + worldName + ".enabled", false))
-        {
+        if (!this.getConfig().getBoolean("worlds." + worldName + ".enabled", false)) {
             return;
         }
 
