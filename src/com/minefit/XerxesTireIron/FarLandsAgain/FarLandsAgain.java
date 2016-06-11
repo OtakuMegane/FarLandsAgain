@@ -48,13 +48,13 @@ public class FarLandsAgain extends JavaPlugin implements Listener {
         messages.pluginDisable();
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onWorldInit(WorldInitEvent event) {
         World world = event.getWorld();
         prepareWorld(world);
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onWorldLoad(WorldLoadEvent event) {
         World world = event.getWorld();
         prepareWorld(world);
