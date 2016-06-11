@@ -26,7 +26,7 @@ public class FarLandsAgain extends JavaPlugin implements Listener {
         this.manageWorlds = new HashMap<String, ManageFarLands>();
 
         if (!version.equals("v1_8_R1") && !version.equals("v1_8_R2") && !version.equals("v1_8_R3")
-                && !version.equals("v1_9_R1") && !version.equals("v1_9_R2")) {
+                && !version.equals("v1_9_R1") && !version.equals("v1_9_R2") && !version.equals("v1_10_R1")) {
             messages.incompatibleVersion();
         } else {
             messages.pluginReady();
