@@ -17,10 +17,10 @@ import net.minecraft.server.v1_9_R2.ChunkGenerator;
 import net.minecraft.server.v1_9_R2.WorldServer;
 
 public class LoadFarlands {
-    private FarLandsAgain plugin;
-    private World world;
-    private WorldServer nmsWorld;
-    private Messages messages;
+    private final FarLandsAgain plugin;
+    private final World world;
+    private final WorldServer nmsWorld;
+    private final Messages messages;
     private ChunkGenerator originalGenerator;
 
     public LoadFarlands(FarLandsAgain instance, World world) {
@@ -45,7 +45,7 @@ public class LoadFarlands {
     public void overrideGenerator() {
         String worldName = this.world.getName();
         this.originalGenerator = this.nmsWorld.getChunkProviderServer().chunkGenerator;
-        String originalGenName = originalGenerator.getClass().getSimpleName();
+        String originalGenName = this.originalGenerator.getClass().getSimpleName();
         boolean genFeatures = this.nmsWorld.getWorldData().shouldGenerateMapFeatures();
         String genOptions = this.nmsWorld.getWorldData().getGeneratorOptions();
         Environment environment = this.world.getEnvironment();

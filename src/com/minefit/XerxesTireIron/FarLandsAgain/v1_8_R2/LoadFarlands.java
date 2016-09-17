@@ -14,10 +14,10 @@ import net.minecraft.server.v1_8_R2.WorldServer;
 import net.minecraft.server.v1_8_R2.IChunkProvider;
 
 public class LoadFarlands {
-    private FarLandsAgain plugin;
-    private World world;
-    private WorldServer nmsWorld;
-    private Messages messages;
+    private final FarLandsAgain plugin;
+    private final World world;
+    private final WorldServer nmsWorld;
+    private final Messages messages;
     private IChunkProvider originalProvider;
 
     public LoadFarlands(FarLandsAgain instance, World world) {

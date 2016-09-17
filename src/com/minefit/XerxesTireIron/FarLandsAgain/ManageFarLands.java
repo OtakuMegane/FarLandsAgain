@@ -4,8 +4,8 @@ import org.bukkit.World;
 
 public class ManageFarLands {
 
-    private FarLandsAgain plugin;
-    private World world;
+    private final FarLandsAgain plugin;
+    private final World world;
     private com.minefit.XerxesTireIron.FarLandsAgain.v1_8_R1.LoadFarlands LF8R1;
     private com.minefit.XerxesTireIron.FarLandsAgain.v1_8_R2.LoadFarlands LF8R2;
     private com.minefit.XerxesTireIron.FarLandsAgain.v1_8_R3.LoadFarlands LF8R3;
