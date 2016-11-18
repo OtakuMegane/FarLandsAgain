@@ -19,7 +19,7 @@ public class FarLandsAgain extends JavaPlugin implements Listener {
     private final Messages messages = new Messages(this);
     private HashMap<String, ManageFarLands> manageWorlds;
     private final ServerVersion serverVersion = new ServerVersion(this);
-    private final List<String> compatibleVersions = Arrays.asList("v1_8_R1", "v1_8_R2", "v1_8_R3", "v1_9_R1", "v1_9_R2", "v1_10_R1");
+    private final List<String> compatibleVersions = Arrays.asList("v1_8_R1", "v1_8_R2", "v1_8_R3", "v1_9_R1", "v1_9_R2", "v1_10_R1", "v1_11_R1");
 
     @Override
     public void onEnable() {
@@ -32,6 +32,7 @@ public class FarLandsAgain extends JavaPlugin implements Listener {
         if (!this.serverVersion.compatibleVersion(this.compatibleVersions)) {
             this.messages.incompatibleVersion();
             Bukkit.getPluginManager().disablePlugin(this);
+            return;
         }
 
         // Catches the /reload command or other things that may bypass the
