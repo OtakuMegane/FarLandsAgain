@@ -3,6 +3,8 @@ package com.minefit.XerxesTireIron.FarLandsAgain.v1_9_R1;
 import java.util.List;
 import java.util.Random;
 
+import org.bukkit.configuration.ConfigurationSection;
+
 import net.minecraft.server.v1_9_R1.BiomeBase;
 import net.minecraft.server.v1_9_R1.Biomes;
 import net.minecraft.server.v1_9_R1.BlockFalling;
@@ -63,7 +65,7 @@ public class FLAChunkProviderGenerate implements ChunkGenerator {
     double[] g;
     double[] h;
 
-    public FLAChunkProviderGenerate(World world, long i, boolean flag, String s) {
+    public FLAChunkProviderGenerate(ConfigurationSection config, World world, long i, boolean flag, String s) {
         this.t = Blocks.WATER.getBlockData();
         this.u = new double[256];
         this.v = new WorldGenCaves();
@@ -77,13 +79,13 @@ public class FLAChunkProviderGenerate implements ChunkGenerator {
         this.o = flag;
         this.p = world.getWorldData().getType();
         this.i = new Random(i);
-        this.j = new NoiseGeneratorOctaves(this.i, 16);
-        this.k = new NoiseGeneratorOctaves(this.i, 16);
-        this.l = new NoiseGeneratorOctaves(this.i, 8);
+        this.j = new NoiseGeneratorOctaves(config, this.i, 16);
+        this.k = new NoiseGeneratorOctaves(config, this.i, 16);
+        this.l = new NoiseGeneratorOctaves(config, this.i, 8);
         this.m = new NoiseGenerator3(this.i, 4);
-        this.b = new NoiseGeneratorOctaves(this.i, 10);
-        this.c = new NoiseGeneratorOctaves(this.i, 16);
-        this.d = new NoiseGeneratorOctaves(this.i, 8);
+        this.b = new NoiseGeneratorOctaves(config, this.i, 10);
+        this.c = new NoiseGeneratorOctaves(config, this.i, 16);
+        this.d = new NoiseGeneratorOctaves(config, this.i, 8);
         this.q = new double[825];
         this.r = new float[25];
 

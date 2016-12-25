@@ -2,6 +2,7 @@ package com.minefit.XerxesTireIron.FarLandsAgain.v1_8_R1;
 
 import org.bukkit.World;
 import org.bukkit.World.Environment;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.craftbukkit.v1_8_R1.CraftWorld;
 
 import com.minefit.XerxesTireIron.FarLandsAgain.Messages;
@@ -34,6 +35,7 @@ public class LoadFarlands {
     }
 
     public void overrideGenerator() {
+        ConfigurationSection worldConfig = this.plugin.getConfig().getConfigurationSection("worlds." + this.world.getName());
         String worldName = this.world.getName();
         long worldSeed = this.world.getSeed();
         this.originalProvider = this.nmsWorld.chunkProviderServer.chunkProvider;
@@ -56,21 +58,21 @@ public class LoadFarlands {
                 return;
             }
 
-            this.nmsWorld.chunkProviderServer.chunkProvider = new FLAChunkProviderGenerate(this.nmsWorld, worldSeed, genFeatures, genOptions);
+            this.nmsWorld.chunkProviderServer.chunkProvider = new FLAChunkProviderGenerate(worldConfig, this.nmsWorld, worldSeed, genFeatures, genOptions);
         } else if (environment == Environment.NETHER) {
             if (!originalGenName.equals("NetherChunkGenerator")) {
                 this.messages.unknownGenerator(worldName, originalGenName);
                 return;
             }
 
-            this.nmsWorld.chunkProviderServer.chunkProvider = new FLAChunkProviderHell(this.nmsWorld, genFeatures, worldSeed);
+            this.nmsWorld.chunkProviderServer.chunkProvider = new FLAChunkProviderHell(worldConfig, this.nmsWorld, genFeatures, worldSeed);
         } else if (environment == Environment.THE_END) {
             if (!originalGenName.equals("SkyLandsChunkGenerator")) {
                 this.messages.unknownGenerator(worldName, originalGenName);
                 return;
             }
 
-            this.nmsWorld.chunkProviderServer.chunkProvider = new FLAChunkProviderTheEnd(this.nmsWorld, worldSeed);
+            this.nmsWorld.chunkProviderServer.chunkProvider = new FLAChunkProviderTheEnd(worldConfig, this.nmsWorld, worldSeed);
         } else {
             this.messages.unknownEnvironment(worldName, environment.toString());
         }

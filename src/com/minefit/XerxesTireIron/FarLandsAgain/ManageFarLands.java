@@ -36,6 +36,8 @@ public class ManageFarLands {
         }
     }
 
+    // Always good to clean up when disabling a plugin
+    // Especially if it's a /reload command
     public void restoreGenerator()
     {
         if (this.plugin.version.equals("v1_8_R1")) {

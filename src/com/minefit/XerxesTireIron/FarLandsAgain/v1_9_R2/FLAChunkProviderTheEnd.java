@@ -3,6 +3,8 @@ package com.minefit.XerxesTireIron.FarLandsAgain.v1_9_R2;
 import java.util.List;
 import java.util.Random;
 
+import org.bukkit.configuration.ConfigurationSection;
+
 import net.minecraft.server.v1_9_R2.BiomeBase;
 import net.minecraft.server.v1_9_R2.BlockChorusFlower;
 import net.minecraft.server.v1_9_R2.BlockFalling;
@@ -43,16 +45,16 @@ public class FLAChunkProviderTheEnd extends ChunkProviderTheEnd implements Chunk
     double[] g;
     private final WorldGenEndIsland r = new WorldGenEndIsland();
 
-    public FLAChunkProviderTheEnd(World world, boolean flag, long i) {
+    public FLAChunkProviderTheEnd(ConfigurationSection config, World world, boolean flag, long i) {
         super(world, flag, i);
         this.l = world;
         this.m = flag;
         this.h = new Random(i);
-        this.i = new NoiseGeneratorOctaves(this.h, 16);
-        this.j = new NoiseGeneratorOctaves(this.h, 16);
-        this.k = new NoiseGeneratorOctaves(this.h, 8);
-        this.c = new NoiseGeneratorOctaves(this.h, 10);
-        this.d = new NoiseGeneratorOctaves(this.h, 16);
+        this.i = new NoiseGeneratorOctaves(config, this.h, 16);
+        this.j = new NoiseGeneratorOctaves(config, this.h, 16);
+        this.k = new NoiseGeneratorOctaves(config, this.h, 8);
+        this.c = new NoiseGeneratorOctaves(config, this.h, 10);
+        this.d = new NoiseGeneratorOctaves(config, this.h, 16);
         this.o = new NoiseGenerator3Handler(this.h);
     }
 

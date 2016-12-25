@@ -2,6 +2,8 @@ package com.minefit.XerxesTireIron.FarLandsAgain.v1_8_R3;
 
 import java.util.Random;
 
+import org.bukkit.configuration.ConfigurationSection;
+
 import net.minecraft.server.v1_8_R3.BiomeBase;
 import net.minecraft.server.v1_8_R3.BlockPosition;
 import net.minecraft.server.v1_8_R3.Blocks;
@@ -41,20 +43,20 @@ public class FLAChunkProviderHell extends ChunkProviderHell implements IChunkPro
     double[] f;
     double[] g;
 
-    public FLAChunkProviderHell(World world, boolean flag, long i) {
+    public FLAChunkProviderHell(ConfigurationSection config, World world, boolean flag, long i) {
         super(world, flag, i);
         this.B = new WorldGenNether();
         this.C = new WorldGenCavesHell();
         this.h = world;
         this.i = flag;
         this.j = new Random(i);
-        this.o = new NoiseGeneratorOctaves(this.j, 16);
-        this.p = new NoiseGeneratorOctaves(this.j, 16);
-        this.q = new NoiseGeneratorOctaves(this.j, 8);
-        this.r = new NoiseGeneratorOctaves(this.j, 4);
-        this.s = new NoiseGeneratorOctaves(this.j, 4);
-        this.a = new NoiseGeneratorOctaves(this.j, 10);
-        this.b = new NoiseGeneratorOctaves(this.j, 16);
+        this.o = new NoiseGeneratorOctaves(config, this.j, 16);
+        this.p = new NoiseGeneratorOctaves(config, this.j, 16);
+        this.q = new NoiseGeneratorOctaves(config, this.j, 8);
+        this.r = new NoiseGeneratorOctaves(config, this.j, 4);
+        this.s = new NoiseGeneratorOctaves(config, this.j, 4);
+        this.a = new NoiseGeneratorOctaves(config, this.j, 10);
+        this.b = new NoiseGeneratorOctaves(config, this.j, 16);
         world.b(63);
     }
 

@@ -3,6 +3,8 @@ package com.minefit.XerxesTireIron.FarLandsAgain.v1_11_R1;
 import java.util.List;
 import java.util.Random;
 
+import org.bukkit.configuration.ConfigurationSection;
+
 import net.minecraft.server.v1_11_R1.BiomeBase;
 import net.minecraft.server.v1_11_R1.BlockFalling;
 import net.minecraft.server.v1_11_R1.BlockPosition;
@@ -67,7 +69,7 @@ public class FLAChunkProviderHell extends ChunkProviderHell {
     double[] l;
     double[] m;
 
-    public FLAChunkProviderHell(World world, boolean flag, long i) {
+    public FLAChunkProviderHell(ConfigurationSection config, World world, boolean flag, long i) {
         super(world, flag, i);
         this.C = new WorldGenMinable(Blocks.QUARTZ_ORE.getBlockData(), 14, BlockPredicate.a(Blocks.NETHERRACK));
         this.D = new WorldGenMinable(Blocks.df.getBlockData(), 33, BlockPredicate.a(Blocks.NETHERRACK));
@@ -80,13 +82,13 @@ public class FLAChunkProviderHell extends ChunkProviderHell {
         this.n = world;
         this.o = flag;
         this.p = new Random(i);
-        this.u = new NoiseGeneratorOctaves(this.p, 16);
-        this.v = new NoiseGeneratorOctaves(this.p, 16);
-        this.w = new NoiseGeneratorOctaves(this.p, 8);
-        this.x = new NoiseGeneratorOctaves(this.p, 4);
-        this.y = new NoiseGeneratorOctaves(this.p, 4);
-        this.g = new NoiseGeneratorOctaves(this.p, 10);
-        this.h = new NoiseGeneratorOctaves(this.p, 16);
+        this.u = new NoiseGeneratorOctaves(config, this.p, 16);
+        this.v = new NoiseGeneratorOctaves(config, this.p, 16);
+        this.w = new NoiseGeneratorOctaves(config, this.p, 8);
+        this.x = new NoiseGeneratorOctaves(config, this.p, 4);
+        this.y = new NoiseGeneratorOctaves(config, this.p, 4);
+        this.g = new NoiseGeneratorOctaves(config, this.p, 10);
+        this.h = new NoiseGeneratorOctaves(config, this.p, 16);
         world.b(63);
     }
 

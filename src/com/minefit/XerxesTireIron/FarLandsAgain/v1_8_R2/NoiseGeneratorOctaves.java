@@ -2,6 +2,8 @@ package com.minefit.XerxesTireIron.FarLandsAgain.v1_8_R2;
 
 import java.util.Random;
 
+import org.bukkit.configuration.ConfigurationSection;
+
 import net.minecraft.server.v1_8_R2.MathHelper;
 import net.minecraft.server.v1_8_R2.NoiseGenerator;
 import net.minecraft.server.v1_8_R2.NoiseGeneratorPerlin;
@@ -9,10 +11,18 @@ import net.minecraft.server.v1_8_R2.NoiseGeneratorPerlin;
 public class NoiseGeneratorOctaves extends NoiseGenerator {
     private NoiseGeneratorPerlin[] a;
     private int b;
+    private final int lowX;
+    private final int lowZ;
+    private final int highX;
+    private final int highZ;
 
-    public NoiseGeneratorOctaves(Random random, int i) {
+    public NoiseGeneratorOctaves(ConfigurationSection config, Random random, int i) {
         this.b = i;
         this.a = new NoiseGeneratorPerlin[i];
+        this.lowX = config.getInt("lowX", -12550824) / 4;
+        this.lowZ = config.getInt("lowZ", -12550824) / 4;
+        this.highX = config.getInt("highX", 12550824) / 4;
+        this.highZ = config.getInt("highZ", 12550824) / 4;
 
         for (int j = 0; j < i; ++j) {
             this.a[j] = new NoiseGeneratorPerlin(random);
@@ -26,6 +36,18 @@ public class NoiseGeneratorOctaves extends NoiseGenerator {
             for (int k1 = 0; k1 < adouble.length; ++k1) {
                 adouble[k1] = 0.0D;
             }
+        }
+
+        if (i >= this.highX) {
+            i += 3137706;
+        } else if (i <= this.lowX) {
+            i -= 3137706;
+        }
+
+        if (k >= this.highZ) {
+            k += 3137706;
+        } else if (k <= this.lowZ) {
+            k -= 3137706;
         }
 
         double d3 = 1.0D;

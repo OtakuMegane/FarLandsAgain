@@ -5,6 +5,7 @@ import java.lang.reflect.Modifier;
 
 import org.bukkit.World;
 import org.bukkit.World.Environment;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.craftbukkit.v1_9_R2.CraftWorld;
 
 import com.minefit.XerxesTireIron.FarLandsAgain.Messages;
@@ -43,6 +44,7 @@ public class LoadFarlands {
     }
 
     public void overrideGenerator() {
+        ConfigurationSection worldConfig = this.plugin.getConfig().getConfigurationSection("worlds." + this.world.getName());
         String worldName = this.world.getName();
         this.originalGenerator = this.nmsWorld.getChunkProviderServer().chunkGenerator;
         String originalGenName = this.originalGenerator.getClass().getSimpleName();
@@ -68,7 +70,7 @@ public class LoadFarlands {
                     return;
                 }
 
-                FLAChunkProviderGenerate generator = new FLAChunkProviderGenerate(this.nmsWorld, this.nmsWorld.getSeed(), genFeatures,
+                FLAChunkProviderGenerate generator = new FLAChunkProviderGenerate(worldConfig, this.nmsWorld, this.nmsWorld.getSeed(), genFeatures,
                         genOptions);
                 setFinal(cp, generator);
             } else if (environment == Environment.NETHER) {
@@ -77,7 +79,7 @@ public class LoadFarlands {
                     return;
                 }
 
-                FLAChunkProviderHell generator = new FLAChunkProviderHell(this.nmsWorld, genFeatures, this.nmsWorld.getSeed());
+                FLAChunkProviderHell generator = new FLAChunkProviderHell(worldConfig, this.nmsWorld, genFeatures, this.nmsWorld.getSeed());
                 setFinal(cp, generator);
             } else if (environment == Environment.THE_END) {
                 if (!originalGenName.equals("SkyLandsChunkGenerator")) {
@@ -85,7 +87,7 @@ public class LoadFarlands {
                     return;
                 }
 
-                FLAChunkProviderTheEnd generator = new FLAChunkProviderTheEnd(this.nmsWorld, genFeatures, this.nmsWorld.getSeed());
+                FLAChunkProviderTheEnd generator = new FLAChunkProviderTheEnd(worldConfig, this.nmsWorld, genFeatures, this.nmsWorld.getSeed());
                 setFinal(cp, generator);
             } else {
                 this.messages.unknownEnvironment(worldName, environment.toString());
