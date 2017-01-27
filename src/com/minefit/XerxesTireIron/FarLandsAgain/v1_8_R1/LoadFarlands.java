@@ -29,13 +29,13 @@ public class LoadFarlands {
         overrideGenerator();
     }
 
-    public void restoreGenerator()
-    {
+    public void restoreGenerator() {
         this.nmsWorld.chunkProviderServer.chunkProvider = this.originalProvider;
     }
 
     public void overrideGenerator() {
-        ConfigurationSection worldConfig = this.plugin.getConfig().getConfigurationSection("worlds." + this.world.getName());
+        ConfigurationSection worldConfig = this.plugin.getConfig()
+                .getConfigurationSection("worlds." + this.world.getName());
         String worldName = this.world.getName();
         long worldSeed = this.world.getSeed();
         this.originalProvider = this.nmsWorld.chunkProviderServer.chunkProvider;
@@ -44,10 +44,8 @@ public class LoadFarlands {
         String genOptions = this.nmsWorld.getWorldData().getGeneratorOptions();
         Environment environment = this.world.getEnvironment();
 
-        if(originalGenName.equals("FLAChunkProviderGenerate")
-        || originalGenName.equals("FLAChunkProviderHell")
-        || originalGenName.equals("FLAChunkProviderTheEnd"))
-        {
+        if (originalGenName.equals("FLAChunkProviderGenerate") || originalGenName.equals("FLAChunkProviderHell")
+                || originalGenName.equals("FLAChunkProviderTheEnd")) {
             this.messages.alreadyEnabled(worldName);
             return;
         }
@@ -58,21 +56,24 @@ public class LoadFarlands {
                 return;
             }
 
-            this.nmsWorld.chunkProviderServer.chunkProvider = new FLAChunkProviderGenerate(worldConfig, this.nmsWorld, worldSeed, genFeatures, genOptions);
+            this.nmsWorld.chunkProviderServer.chunkProvider = new FLAChunkProviderGenerate(worldConfig, this.nmsWorld,
+                    worldSeed, genFeatures, genOptions, this.plugin);
         } else if (environment == Environment.NETHER) {
             if (!originalGenName.equals("NetherChunkGenerator")) {
                 this.messages.unknownGenerator(worldName, originalGenName);
                 return;
             }
 
-            this.nmsWorld.chunkProviderServer.chunkProvider = new FLAChunkProviderHell(worldConfig, this.nmsWorld, genFeatures, worldSeed, this.plugin);
+            this.nmsWorld.chunkProviderServer.chunkProvider = new FLAChunkProviderHell(worldConfig, this.nmsWorld,
+                    genFeatures, worldSeed, this.plugin);
         } else if (environment == Environment.THE_END) {
             if (!originalGenName.equals("SkyLandsChunkGenerator")) {
                 this.messages.unknownGenerator(worldName, originalGenName);
                 return;
             }
 
-            this.nmsWorld.chunkProviderServer.chunkProvider = new FLAChunkProviderTheEnd(worldConfig, this.nmsWorld, worldSeed);
+            this.nmsWorld.chunkProviderServer.chunkProvider = new FLAChunkProviderTheEnd(worldConfig, this.nmsWorld,
+                    worldSeed);
         } else {
             this.messages.unknownEnvironment(worldName, environment.toString());
         }

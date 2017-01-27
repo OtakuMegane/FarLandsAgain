@@ -4,21 +4,29 @@ import java.util.Random;
 
 import org.bukkit.configuration.ConfigurationSection;
 
+import com.minefit.XerxesTireIron.FarLandsAgain.FarLandsAgain;
+import com.minefit.XerxesTireIron.FarLandsAgain.PaperSpigot;
+
 import net.minecraft.server.v1_8_R3.BiomeBase;
 import net.minecraft.server.v1_8_R3.Block;
+import net.minecraft.server.v1_8_R3.BlockFalling;
 import net.minecraft.server.v1_8_R3.BlockPosition;
 import net.minecraft.server.v1_8_R3.Blocks;
 import net.minecraft.server.v1_8_R3.Chunk;
+import net.minecraft.server.v1_8_R3.ChunkCoordIntPair;
 import net.minecraft.server.v1_8_R3.ChunkProviderGenerate;
 import net.minecraft.server.v1_8_R3.ChunkSnapshot;
 import net.minecraft.server.v1_8_R3.CustomWorldSettingsFinal;
 import net.minecraft.server.v1_8_R3.IChunkProvider;
 import net.minecraft.server.v1_8_R3.MathHelper;
 import net.minecraft.server.v1_8_R3.NoiseGenerator3;
+import net.minecraft.server.v1_8_R3.SpawnerCreature;
 import net.minecraft.server.v1_8_R3.World;
 import net.minecraft.server.v1_8_R3.WorldGenBase;
 import net.minecraft.server.v1_8_R3.WorldGenCanyon;
 import net.minecraft.server.v1_8_R3.WorldGenCaves;
+import net.minecraft.server.v1_8_R3.WorldGenDungeons;
+import net.minecraft.server.v1_8_R3.WorldGenLakes;
 import net.minecraft.server.v1_8_R3.WorldGenLargeFeature;
 import net.minecraft.server.v1_8_R3.WorldGenMineshaft;
 import net.minecraft.server.v1_8_R3.WorldGenMonument;
@@ -56,8 +64,13 @@ public class FLAChunkProviderGenerate extends ChunkProviderGenerate implements I
     double[] f;
     double[] g;
 
-    public FLAChunkProviderGenerate(ConfigurationSection config, World world, long i, boolean flag, String s) {
+    private final FarLandsAgain plugin;
+    private final PaperSpigot paperSpigot;
+
+    public FLAChunkProviderGenerate(ConfigurationSection config, World world, long i, boolean flag, String s,
+            FarLandsAgain instance) {
         super(world, i, flag, s);
+        this.plugin = instance;
         this.s = Blocks.WATER;
         this.t = new double[256];
         this.u = new WorldGenCaves();
@@ -80,6 +93,8 @@ public class FLAChunkProviderGenerate extends ChunkProviderGenerate implements I
         this.c = new NoiseGeneratorOctaves(config, this.h, 8);
         this.p = new double[825];
         this.q = new float[25];
+
+        this.paperSpigot = new PaperSpigot(this.plugin, world.worldData.getName());
 
         for (int j = -2; j <= 2; ++j) {
             for (int k = -2; k <= 2; ++k) {
@@ -165,31 +180,31 @@ public class FLAChunkProviderGenerate extends ChunkProviderGenerate implements I
         this.a(i, j, chunksnapshot);
         this.B = this.m.getWorldChunkManager().getBiomeBlock(this.B, i * 16, j * 16, 16, 16);
         this.a(i, j, chunksnapshot, this.B);
-        if (this.r.r) {
+        if (this.r.r && this.paperSpigot.generateCaves) {
             this.u.a(this, this.m, i, j, chunksnapshot);
         }
 
-        if (this.r.z) {
+        if (this.r.z && this.paperSpigot.generateCanyon) {
             this.z.a(this, this.m, i, j, chunksnapshot);
         }
 
-        if (this.r.w && this.n) {
+        if (this.r.w && this.n && this.paperSpigot.generateMineshaft) {
             this.x.a(this, this.m, i, j, chunksnapshot);
         }
 
-        if (this.r.v && this.n) {
+        if (this.r.v && this.n && this.paperSpigot.generateVillage) {
             this.w.a(this, this.m, i, j, chunksnapshot);
         }
 
-        if (this.r.u && this.n) {
+        if (this.r.u && this.n && this.paperSpigot.generateStronghold) {
             this.v.a(this, this.m, i, j, chunksnapshot);
         }
 
-        if (this.r.x && this.n) {
+        if (this.r.x && this.n && this.paperSpigot.generateTemple) {
             this.y.a(this, this.m, i, j, chunksnapshot);
         }
 
-        if (this.r.y && this.n) {
+        if (this.r.y && this.n && this.paperSpigot.generateMonument) {
             this.A.a(this, this.m, i, j, chunksnapshot);
         }
 
@@ -305,6 +320,118 @@ public class FLAChunkProviderGenerate extends ChunkProviderGenerate implements I
                     ++l;
                 }
             }
+        }
+
+    }
+
+    @Override
+    public void getChunkAt(IChunkProvider ichunkprovider, int i, int j) {
+        BlockFalling.instaFall = true;
+        int k = i * 16;
+        int l = j * 16;
+        BlockPosition blockposition = new BlockPosition(k, 0, l);
+        BiomeBase biomebase = this.m.getBiome(blockposition.a(16, 0, 16));
+
+        this.h.setSeed(this.m.getSeed());
+        long i1 = this.h.nextLong() / 2L * 2L + 1L;
+        long j1 = this.h.nextLong() / 2L * 2L + 1L;
+
+        this.h.setSeed((long) i * i1 + (long) j * j1 ^ this.m.getSeed());
+        boolean flag = false;
+        ChunkCoordIntPair chunkcoordintpair = new ChunkCoordIntPair(i, j);
+
+        if (this.r.w && this.n && this.paperSpigot.generateMineshaft) {
+            this.x.a(this.m, this.h, chunkcoordintpair);
+        }
+
+        if (this.r.v && this.n && this.paperSpigot.generateVillage) {
+            flag = this.w.a(this.m, this.h, chunkcoordintpair);
+        }
+
+        if (this.r.u && this.n && this.paperSpigot.generateStronghold) {
+            this.v.a(this.m, this.h, chunkcoordintpair);
+        }
+
+        if (this.r.x && this.n && this.paperSpigot.generateTemple) {
+            this.y.a(this.m, this.h, chunkcoordintpair);
+        }
+
+        if (this.r.y && this.n && this.paperSpigot.generateMonument) {
+            this.A.a(this.m, this.h, chunkcoordintpair);
+        }
+
+        int k1;
+        int l1;
+        int i2;
+
+        if (biomebase != BiomeBase.DESERT && biomebase != BiomeBase.DESERT_HILLS && this.r.A && !flag && this.h.nextInt(this.r.B) == 0) {
+            k1 = this.h.nextInt(16) + 8;
+            l1 = this.h.nextInt(256);
+            i2 = this.h.nextInt(16) + 8;
+            (new WorldGenLakes(Blocks.WATER)).generate(this.m, this.h, blockposition.a(k1, l1, i2));
+        }
+
+        if (!flag && this.h.nextInt(this.r.D / 10) == 0 && this.r.C) {
+            k1 = this.h.nextInt(16) + 8;
+            l1 = this.h.nextInt(this.h.nextInt(248) + 8);
+            i2 = this.h.nextInt(16) + 8;
+            if (l1 < this.m.F() || this.h.nextInt(this.r.D / 8) == 0) {
+                (new WorldGenLakes(Blocks.LAVA)).generate(this.m, this.h, blockposition.a(k1, l1, i2));
+            }
+        }
+
+        if (this.r.s) {
+            for (k1 = 0; k1 < this.r.t; ++k1) {
+                l1 = this.h.nextInt(16) + 8;
+                i2 = this.h.nextInt(256);
+                int j2 = this.h.nextInt(16) + 8;
+
+                (new WorldGenDungeons()).generate(this.m, this.h, blockposition.a(l1, i2, j2));
+            }
+        }
+
+        biomebase.a(this.m, this.h, new BlockPosition(k, 0, l));
+        SpawnerCreature.a(this.m, biomebase, k + 8, l + 8, 16, 16, this.h);
+        blockposition = blockposition.a(8, 0, 8);
+
+        for (k1 = 0; k1 < 16; ++k1) {
+            for (l1 = 0; l1 < 16; ++l1) {
+                BlockPosition blockposition1 = this.m.q(blockposition.a(k1, 0, l1));
+                BlockPosition blockposition2 = blockposition1.down();
+
+                if (this.m.v(blockposition2)) {
+                    this.m.setTypeAndData(blockposition2, Blocks.ICE.getBlockData(), 2);
+                }
+
+                if (this.m.f(blockposition1, true)) {
+                    this.m.setTypeAndData(blockposition1, Blocks.SNOW_LAYER.getBlockData(), 2);
+                }
+            }
+        }
+
+        BlockFalling.instaFall = false;
+    }
+
+    @Override
+    public void recreateStructures(Chunk chunk, int i, int j) {
+        if (this.r.w && this.n && this.paperSpigot.generateMineshaft) {
+            this.x.a(this, this.m, i, j, (ChunkSnapshot) null);
+        }
+
+        if (this.r.v && this.n && this.paperSpigot.generateVillage) {
+            this.w.a(this, this.m, i, j, (ChunkSnapshot) null);
+        }
+
+        if (this.r.u && this.n && this.paperSpigot.generateStronghold) {
+            this.v.a(this, this.m, i, j, (ChunkSnapshot) null);
+        }
+
+        if (this.r.x && this.n && this.paperSpigot.generateTemple) {
+            this.y.a(this, this.m, i, j, (ChunkSnapshot) null);
+        }
+
+        if (this.r.y && this.n && this.paperSpigot.generateMonument) {
+            this.A.a(this, this.m, i, j, (ChunkSnapshot) null);
         }
 
     }

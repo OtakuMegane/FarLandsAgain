@@ -46,9 +46,8 @@ public class FLAChunkProviderHell extends ChunkProviderHell implements IChunkPro
     double[] f;
     double[] g;
 
-    private boolean paperFortress;
-    private boolean paperFlat;
     private final FarLandsAgain plugin;
+    private final PaperSpigot paperSpigot;
 
     public FLAChunkProviderHell(ConfigurationSection config, World world, boolean flag, long i, FarLandsAgain instance) {
         super(world, flag, i);
@@ -67,15 +66,7 @@ public class FLAChunkProviderHell extends ChunkProviderHell implements IChunkPro
         this.b = new NoiseGeneratorOctaves(config, this.j, 16);
         world.b(63);
 
-        this.paperFlat = false;
-        this.paperFortress = flag;
-
-        if (this.plugin.isPaper()) {
-            com.destroystokyo.paper.PaperWorldConfig paperConfig = new PaperSpigot(this.plugin)
-                    .getPaperWorldConfig(world.worldData.getName());
-            this.paperFlat = paperConfig.generateFlatBedrock;
-            this.paperFortress = paperConfig.generateFortress;
-        }
+        this.paperSpigot = new PaperSpigot(this.plugin, world.worldData.getName());
     }
 
     @Override
@@ -166,8 +157,8 @@ public class FLAChunkProviderHell extends ChunkProviderHell implements IChunkPro
                 IBlockData iblockdata1 = Blocks.NETHERRACK.getBlockData();
 
                 for (int l1 = 127; l1 >= 0; --l1) {
-                    if (l1 < 127 - (this.paperFlat ? 0 : this.j.nextInt(5))
-                            && l1 > (this.paperFlat ? 0 : this.j.nextInt(5))) {
+                    if (l1 < 127 - (this.paperSpigot.generateFlatBedrock ? 0 : this.j.nextInt(5))
+                            && l1 > (this.paperSpigot.generateFlatBedrock ? 0 : this.j.nextInt(5))) {
                         IBlockData iblockdata2 = chunksnapshot.a(i1, l1, l);
 
                         if (iblockdata2.getBlock() != null && iblockdata2.getBlock().getMaterial() != Material.AIR) {
@@ -322,7 +313,7 @@ public class FLAChunkProviderHell extends ChunkProviderHell implements IChunkPro
 
     @Override
     public void recreateStructures(Chunk chunk, int i, int j) {
-        if (this.paperFortress) {
+        if (this.paperSpigot.generateFortress) {
             this.B.a(this, this.h, i, j, (ChunkSnapshot) null);
         }
     }
