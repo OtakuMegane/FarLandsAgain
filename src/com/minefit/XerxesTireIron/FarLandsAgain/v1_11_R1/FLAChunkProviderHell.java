@@ -5,6 +5,9 @@ import java.util.Random;
 
 import org.bukkit.configuration.ConfigurationSection;
 
+import com.minefit.XerxesTireIron.FarLandsAgain.FarLandsAgain;
+import com.minefit.XerxesTireIron.FarLandsAgain.PaperSpigot;
+
 import net.minecraft.server.v1_11_R1.BiomeBase;
 import net.minecraft.server.v1_11_R1.BlockFalling;
 import net.minecraft.server.v1_11_R1.BlockPosition;
@@ -69,8 +72,13 @@ public class FLAChunkProviderHell extends ChunkProviderHell {
     double[] l;
     double[] m;
 
-    public FLAChunkProviderHell(ConfigurationSection config, World world, boolean flag, long i) {
+    private boolean paperFortress;
+    private boolean paperFlat;
+    private final FarLandsAgain plugin;
+
+    public FLAChunkProviderHell(ConfigurationSection config, World world, boolean flag, long i, FarLandsAgain instance) {
         super(world, flag, i);
+        this.plugin = instance;
         this.C = new WorldGenMinable(Blocks.QUARTZ_ORE.getBlockData(), 14, BlockPredicate.a(Blocks.NETHERRACK));
         this.D = new WorldGenMinable(Blocks.df.getBlockData(), 33, BlockPredicate.a(Blocks.NETHERRACK));
         this.E = new WorldGenHellLava(Blocks.FLOWING_LAVA, true);
@@ -90,6 +98,16 @@ public class FLAChunkProviderHell extends ChunkProviderHell {
         this.g = new NoiseGeneratorOctaves(config, this.p, 10);
         this.h = new NoiseGeneratorOctaves(config, this.p, 16);
         world.b(63);
+
+        this.paperFlat = false;
+        this.paperFortress = flag;
+
+        if (this.plugin.isPaper()) {
+            com.destroystokyo.paper.PaperWorldConfig paperConfig = new PaperSpigot(this.plugin)
+                    .getPaperWorldConfig(world.worldData.getName());
+            this.paperFlat = paperConfig.generateFlatBedrock;
+            this.paperFortress = paperConfig.generateFortress;
+        }
     }
 
     @Override
@@ -180,7 +198,8 @@ public class FLAChunkProviderHell extends ChunkProviderHell {
                 IBlockData iblockdata1 = FLAChunkProviderHell.b;
 
                 for (int l1 = 127; l1 >= 0; --l1) {
-                    if (l1 < 127 - this.p.nextInt(5) && l1 > this.p.nextInt(5)) {
+                    if (l1 < 127 - (this.paperFlat ? 0 : this.p.nextInt(5))
+                            && l1 > (this.paperFlat ? 0 : this.p.nextInt(5))) {
                         IBlockData iblockdata2 = chunksnapshot.a(i1, l1, l);
 
                         if (iblockdata2.getBlock() != null && iblockdata2.getMaterial() != Material.AIR) {
@@ -414,6 +433,8 @@ public class FLAChunkProviderHell extends ChunkProviderHell {
 
     @Override
     public void recreateStructures(Chunk chunk, int i, int j) {
-        this.I.a(this.n, i, j, (ChunkSnapshot) null);
+        if (this.paperFortress) {
+            this.I.a(this.n, i, j, (ChunkSnapshot) null);
+        }
     }
 }

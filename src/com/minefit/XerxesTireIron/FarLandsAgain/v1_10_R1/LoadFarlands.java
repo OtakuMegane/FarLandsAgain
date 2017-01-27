@@ -79,7 +79,7 @@ public class LoadFarlands {
                     return;
                 }
 
-                FLAChunkProviderHell generator = new FLAChunkProviderHell(worldConfig, this.nmsWorld, genFeatures, this.nmsWorld.getSeed());
+                FLAChunkProviderHell generator = new FLAChunkProviderHell(worldConfig, this.nmsWorld, genFeatures, this.nmsWorld.getSeed(), this.plugin);
                 setFinal(cp, generator);
             } else if (environment == Environment.THE_END) {
                 if (!originalGenName.equals("SkyLandsChunkGenerator")) {

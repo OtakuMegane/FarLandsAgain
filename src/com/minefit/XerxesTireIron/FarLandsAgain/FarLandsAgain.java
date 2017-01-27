@@ -15,6 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class FarLandsAgain extends JavaPlugin implements Listener {
     private String name;
+    private boolean isPaper;
     protected String version;
     private final Messages messages = new Messages(this);
     private HashMap<String, ManageFarLands> manageWorlds;
@@ -35,6 +36,10 @@ public class FarLandsAgain extends JavaPlugin implements Listener {
             return;
         }
 
+        if (Bukkit.getName().contains("Paper")) {
+            this.isPaper = true;
+        }
+
         // Catches the /reload command or other things that may bypass the
         // WorldInitEvent
         for (World world : Bukkit.getWorlds()) {
@@ -42,6 +47,10 @@ public class FarLandsAgain extends JavaPlugin implements Listener {
         }
 
         this.messages.pluginReady();
+    }
+
+    public boolean isPaper() {
+        return this.isPaper;
     }
 
     @Override
