@@ -59,7 +59,7 @@ public class LoadFarlands {
             this.nmsWorld.chunkProviderServer.chunkProvider = new FLAChunkProviderGenerate(worldConfig, this.nmsWorld,
                     worldSeed, genFeatures, genOptions, this.plugin);
         } else if (environment == Environment.NETHER) {
-            if (!originalGenName.equals("NetherChunkGenerator")) {
+            if (!originalGenName.equals("NetherChunkGenerator") && !originalGenName.equals("TimedChunkGenerator")) {
                 this.messages.unknownGenerator(worldName, originalGenName);
                 return;
             }
@@ -67,7 +67,7 @@ public class LoadFarlands {
             this.nmsWorld.chunkProviderServer.chunkProvider = new FLAChunkProviderHell(worldConfig, this.nmsWorld,
                     genFeatures, worldSeed, this.plugin);
         } else if (environment == Environment.THE_END) {
-            if (!originalGenName.equals("SkyLandsChunkGenerator")) {
+            if (!originalGenName.equals("SkyLandsChunkGenerator") && !originalGenName.equals("TimedChunkGenerator")) {
                 this.messages.unknownGenerator(worldName, originalGenName);
                 return;
             }
