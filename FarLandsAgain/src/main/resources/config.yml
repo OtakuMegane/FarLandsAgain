@@ -1,0 +1,21 @@
+# This configures the worlds that will have FarLandsAgain enabled and the settings for each
+# Will work for Overworld, Nether and End world types
+# The only required setting is having 'enabled' to be set to true
+# All other settings will use default values if nothing is given in the config
+# All worlds not in the config will be ignored
+#
+# Example config set up:
+#
+# worlds:
+#   world1:
+#     enabled: true
+#     lowX: -12550824
+#     lowZ: -12550824
+#     highX: 12550824
+#     highZ: 12550824
+#   world1_nether:
+#     enabled: true
+#   world1_the_end:
+#     enabled: false
+
+worlds:
