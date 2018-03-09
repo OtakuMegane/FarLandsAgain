@@ -1,5 +1,5 @@
 name: FarLandsAgain
-main: com.minefit.XerxesTireIron.FarLandsAgain.FarLandsAgain
+main: com.minefit.xerxestireiron.farlandsagain.FarLandsAgain
 version: 1.5
 author: XerxesTireIron
 description: Fixes noise generator so that Far Lands generate again :D
