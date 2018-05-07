@@ -48,7 +48,7 @@ public class LoadFarlands {
         }
 
         if (environment == Environment.NORMAL) {
-            if (!originalGenName.equals("NormalChunkGenerator") && !originalGenName.equals("TimedChunkGenerator")) {
+            if (!originalGenName.equals("NormalChunkGenerator")) {
                 this.messages.unknownGenerator(worldName, originalGenName);
                 return;
             }
@@ -56,7 +56,7 @@ public class LoadFarlands {
             this.nmsWorld.chunkProviderServer.chunkProvider = new FLAChunkProviderGenerate(this.nmsWorld, worldSeed, genFeatures,
                     genOptions, this.worldConfig);
         } else if (environment == Environment.NETHER) {
-            if (!originalGenName.equals("NetherChunkGenerator") && !originalGenName.equals("TimedChunkGenerator")) {
+            if (!originalGenName.equals("NetherChunkGenerator")) {
                 this.messages.unknownGenerator(worldName, originalGenName);
                 return;
             }
@@ -64,7 +64,7 @@ public class LoadFarlands {
             this.nmsWorld.chunkProviderServer.chunkProvider = new FLAChunkProviderHell(this.nmsWorld, genFeatures, worldSeed,
                     this.worldConfig);
         } else if (environment == Environment.THE_END) {
-            if (!originalGenName.equals("SkyLandsChunkGenerator") && !originalGenName.equals("TimedChunkGenerator")) {
+            if (!originalGenName.equals("SkyLandsChunkGenerator")) {
                 this.messages.unknownGenerator(worldName, originalGenName);
                 return;
             }

@@ -61,7 +61,7 @@ public class LoadFarlands {
             cp.setAccessible(true);
 
             if (environment == Environment.NORMAL) {
-                if (!originalGenName.equals("NormalChunkGenerator") && !originalGenName.equals("TimedChunkGenerator")) {
+                if (!originalGenName.equals("NormalChunkGenerator")) {
                     this.messages.unknownGenerator(worldName, originalGenName);
                     return;
                 }
@@ -70,7 +70,7 @@ public class LoadFarlands {
                         genOptions, this.worldConfig);
                 setFinal(cp, generator);
             } else if (environment == Environment.NETHER) {
-                if (!originalGenName.equals("NetherChunkGenerator") && !originalGenName.equals("TimedChunkGenerator")) {
+                if (!originalGenName.equals("NetherChunkGenerator")) {
                     this.messages.unknownGenerator(worldName, originalGenName);
                     return;
                 }
@@ -79,8 +79,7 @@ public class LoadFarlands {
                         this.worldConfig);
                 setFinal(cp, generator);
             } else if (environment == Environment.THE_END) {
-                if (!originalGenName.equals("SkyLandsChunkGenerator")
-                        && !originalGenName.equals("TimedChunkGenerator")) {
+                if (!originalGenName.equals("SkyLandsChunkGenerator")) {
                     this.messages.unknownGenerator(worldName, originalGenName);
                     return;
                 }
