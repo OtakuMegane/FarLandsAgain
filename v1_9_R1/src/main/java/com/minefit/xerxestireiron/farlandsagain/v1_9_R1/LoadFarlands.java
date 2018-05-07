@@ -67,7 +67,7 @@ public class LoadFarlands {
                 }
 
                 FLAChunkProviderGenerate generator = new FLAChunkProviderGenerate(this.nmsWorld, worldSeed, genFeatures,
-                        genOptions, worldConfig);
+                        genOptions, this.worldConfig);
                 setFinal(cp, generator);
             } else if (environment == Environment.NETHER) {
                 if (!originalGenName.equals("NetherChunkGenerator") && !originalGenName.equals("TimedChunkGenerator")) {
@@ -76,7 +76,7 @@ public class LoadFarlands {
                 }
 
                 FLAChunkProviderHell generator = new FLAChunkProviderHell(this.nmsWorld, genFeatures, worldSeed,
-                        worldConfig);
+                        this.worldConfig);
                 setFinal(cp, generator);
             } else if (environment == Environment.THE_END) {
                 if (!originalGenName.equals("SkyLandsChunkGenerator")
@@ -86,7 +86,7 @@ public class LoadFarlands {
                 }
 
                 FLAChunkProviderTheEnd generator = new FLAChunkProviderTheEnd(this.nmsWorld, genFeatures, worldSeed,
-                        this.nmsWorld.worldProvider.h(), worldConfig);
+                        this.nmsWorld.worldProvider.h(), this.worldConfig);
                 setFinal(cp, generator);
             } else {
                 this.messages.unknownEnvironment(worldName, environment.toString());

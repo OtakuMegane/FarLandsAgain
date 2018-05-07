@@ -28,6 +28,12 @@
     </dependency>
     <dependency>
     	<groupId>com.minefit.xerxestireiron.farlandsagain</groupId>
+    	<artifactId>v1_8_R3</artifactId>
+    	<version>1.0</version>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>com.minefit.xerxestireiron.farlandsagain</groupId>
     	<artifactId>v1_9_R1</artifactId>
     	<version>1.0</version>
     	<scope>compile</scope>
