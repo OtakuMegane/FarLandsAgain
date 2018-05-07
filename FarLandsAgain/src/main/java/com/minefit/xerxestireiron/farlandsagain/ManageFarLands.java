@@ -7,6 +7,7 @@ public class ManageFarLands {
 
     private final FarLandsAgain plugin;
     private final World world;
+    private com.minefit.xerxestireiron.farlandsagain.v1_9_R1.LoadFarlands LF9R1;
     private com.minefit.xerxestireiron.farlandsagain.v1_9_R2.LoadFarlands LF9R2;
     private com.minefit.xerxestireiron.farlandsagain.v1_10_R1.LoadFarlands LF10R1;
     private com.minefit.xerxestireiron.farlandsagain.v1_11_R1.LoadFarlands LF11R1;
@@ -18,7 +19,10 @@ public class ManageFarLands {
         ConfigurationSection worldConfig = this.plugin.getConfig()
                 .getConfigurationSection("worlds." + this.world.getName());
 
-        if (this.plugin.version.equals("v1_9_R2")) {
+        if (this.plugin.version.equals("v1_9_R1")) {
+            this.LF9R1 = new com.minefit.xerxestireiron.farlandsagain.v1_9_R1.LoadFarlands(this.world, worldConfig,
+                    this.plugin.getName());
+        } else if (this.plugin.version.equals("v1_9_R2")) {
             this.LF9R2 = new com.minefit.xerxestireiron.farlandsagain.v1_9_R2.LoadFarlands(this.world, worldConfig,
                     this.plugin.getName());
         } else if (this.plugin.version.equals("v1_10_R1")) {
@@ -36,7 +40,9 @@ public class ManageFarLands {
     // Always good to clean up when disabling a plugin
     // Especially if it's a /reload command
     public void restoreGenerator() {
-        if (this.plugin.version.equals("v1_9_R2")) {
+        if (this.plugin.version.equals("v1_9_R1")) {
+            this.LF9R1.restoreGenerator();
+        } else if (this.plugin.version.equals("v1_9_R2")) {
             this.LF9R2.restoreGenerator();
         } else if (this.plugin.version.equals("v1_10_R1")) {
             this.LF10R1.restoreGenerator();
