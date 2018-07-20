@@ -92,7 +92,7 @@ public class LoadFarlands {
             e.printStackTrace();
         }
 
-        this.messages.enabledSuccessfully(worldName);
+        this.messages.enableSuccess(worldName);
     }
 
     public void setFinal(Field field, Object obj) throws Exception {
