@@ -4,8 +4,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import org.bukkit.configuration.ConfigurationSection;
-
 import net.minecraft.server.v1_13_R1.BiomeBase;
 import net.minecraft.server.v1_13_R1.BlockPosition;
 import net.minecraft.server.v1_13_R1.Blocks;
@@ -39,20 +37,23 @@ public class FLAChunkProviderHell extends ChunkGeneratorAbstract<GeneratorSettin
     private final IBlockData p;
     private final IBlockData q;
 
-    public FLAChunkProviderHell(World world, WorldChunkManager worldchunkmanager, GeneratorSettingsNether generatorsettingsnether, ConfigurationSection worldConfig) {
+    private final ConfigValues configValues;
+
+    public FLAChunkProviderHell(World world, WorldChunkManager worldchunkmanager, GeneratorSettingsNether generatorsettingsnether, ConfigValues configValues) {
         super(world, worldchunkmanager);
+        this.configValues = configValues;
         this.o = generatorsettingsnether;
         this.p = this.o.r();
         this.q = this.o.s();
         SeededRandom seededrandom = new SeededRandom(this.b);
 
-        this.i = new NoiseGeneratorOctaves(worldConfig, seededrandom, 16);
-        this.j = new NoiseGeneratorOctaves(worldConfig, seededrandom, 16);
-        this.k = new NoiseGeneratorOctaves(worldConfig, seededrandom, 8);
+        this.i = new NoiseGeneratorOctaves(this.configValues, seededrandom, 16);
+        this.j = new NoiseGeneratorOctaves(this.configValues, seededrandom, 16);
+        this.k = new NoiseGeneratorOctaves(this.configValues, seededrandom, 8);
         seededrandom.a(1048);
-        this.l = new NoiseGeneratorOctaves(worldConfig, seededrandom, 4);
-        this.m = new NoiseGeneratorOctaves(worldConfig, seededrandom, 10);
-        this.n = new NoiseGeneratorOctaves(worldConfig, seededrandom, 16);
+        this.l = new NoiseGeneratorOctaves(this.configValues, seededrandom, 4);
+        this.m = new NoiseGeneratorOctaves(this.configValues, seededrandom, 10);
+        this.n = new NoiseGeneratorOctaves(this.configValues, seededrandom, 16);
         world.b(63);
     }
 
@@ -136,13 +137,13 @@ public class FLAChunkProviderHell extends ChunkGeneratorAbstract<GeneratorSettin
             int k;
 
             for (k = 127; k > 122; --k) {
-                if (k >= 127 - random.nextInt(5)) {
+                if (k >= 127 - (this.configValues.paperSpigot.generateFlatBedrock ? 0 : random.nextInt(5))) {
                     ichunkaccess.a((BlockPosition) blockposition_mutableblockposition.c(blockposition.getX(), k, blockposition.getZ()), Blocks.BEDROCK.getBlockData(), false);
                 }
             }
 
             for (k = 4; k >= 0; --k) {
-                if (k <= random.nextInt(5)) {
+                if (k <= (this.configValues.paperSpigot.generateFlatBedrock ? 0 : random.nextInt(5))) {
                     ichunkaccess.a((BlockPosition) blockposition_mutableblockposition.c(blockposition.getX(), k, blockposition.getZ()), Blocks.BEDROCK.getBlockData(), false);
                 }
             }

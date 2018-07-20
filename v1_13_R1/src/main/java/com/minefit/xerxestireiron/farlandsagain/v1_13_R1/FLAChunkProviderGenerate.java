@@ -2,8 +2,6 @@ package com.minefit.xerxestireiron.farlandsagain.v1_13_R1;
 
 import java.util.List;
 
-import org.bukkit.configuration.ConfigurationSection;
-
 import net.minecraft.server.v1_13_R1.BiomeBase;
 import net.minecraft.server.v1_13_R1.BlockPosition;
 import net.minecraft.server.v1_13_R1.ChunkCoordIntPair;
@@ -42,20 +40,20 @@ public class FLAChunkProviderGenerate extends ChunkGeneratorAbstract<GeneratorSe
     private final IBlockData q;
     private final IBlockData r;
 
-    private final ConfigurationSection worldConfig;
+    private final ConfigValues configValues;
 
-    public FLAChunkProviderGenerate(GeneratorAccess generatoraccess, WorldChunkManager worldchunkmanager, GeneratorSettingsOverworld generatorsettingsoverworld, ConfigurationSection worldConfig) {
+    public FLAChunkProviderGenerate(GeneratorAccess generatoraccess, WorldChunkManager worldchunkmanager, GeneratorSettingsOverworld generatorsettingsoverworld, ConfigValues configValues) {
         super(generatoraccess, worldchunkmanager);
-        this.worldConfig = worldConfig;
+        this.configValues = configValues;
         this.n = generatoraccess.getWorldData().getType();
         SeededRandom seededrandom = new SeededRandom(this.b);
 
-        this.g = new NoiseGeneratorOctaves(this.worldConfig, seededrandom, 16);
-        this.h = new NoiseGeneratorOctaves(this.worldConfig, seededrandom, 16);
-        this.i = new NoiseGeneratorOctaves(this.worldConfig, seededrandom, 8);
+        this.g = new NoiseGeneratorOctaves(this.configValues, seededrandom, 16);
+        this.h = new NoiseGeneratorOctaves(this.configValues, seededrandom, 16);
+        this.i = new NoiseGeneratorOctaves(this.configValues, seededrandom, 8);
         this.j = new NoiseGenerator3(seededrandom, 4);
-        this.l = new NoiseGeneratorOctaves(this.worldConfig, seededrandom, 10);
-        this.m = new NoiseGeneratorOctaves(this.worldConfig, seededrandom, 16);
+        this.l = new NoiseGeneratorOctaves(this.configValues, seededrandom, 10);
+        this.m = new NoiseGeneratorOctaves(this.configValues, seededrandom, 16);
         this.o = new float[25];
 
         for (int i = -2; i <= 2; ++i) {

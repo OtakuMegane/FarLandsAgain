@@ -16,12 +16,12 @@ public class Messages {
         this.logger.info("[" + this.pluginName
                 + " Error] A custom generator may already be in place or Mojang changed something.");
         this.logger.info("[" + this.pluginName + " Error] The generator detected is: '" + generatorName + "'.");
-        this.logger.info("[" + this.pluginName + " Error] For safety, TallNether will not be enabled on this world.");
+        this.logger.info("[" + this.pluginName + " Error] For safety, FarLandsAgain will not be enabled on this world.");
     }
 
     public void unknownEnvironment(String worldName, String environment) {
-        this.logger.info("[" + this.pluginName + " Error] The world '" + worldName + "' is not a Nether environment.");
-        this.logger.info("[" + this.pluginName + " Error] TallNether will not be enabled on this world.");
+        this.logger.info("[" + this.pluginName + " Error] The world '" + worldName + "' is not a recognized environment.");
+        this.logger.info("[" + this.pluginName + " Error] FarLandsAgain will not be enabled on this world.");
     }
 
     public void incompatibleVersion() {
@@ -31,11 +31,11 @@ public class Messages {
 
     public void enableSuccess(String worldName) {
         this.logger.info(
-                "[" + this.pluginName + " Success] The world '" + worldName + "' will have a 256-block high nether!");
+                "[" + this.pluginName + " Success] The world '" + worldName + "' will have Far Lands!");
     }
 
     public void enableFailed(String worldName) {
-        this.logger.info("[" + this.pluginName + " Error] Something went wrong enabling TallNether on world '"
+        this.logger.info("[" + this.pluginName + " Error] Something went wrong enabling FarLandsAgain on world '"
                 + worldName + "'.");
     }
 
@@ -48,12 +48,10 @@ public class Messages {
     }
 
     public void alreadyEnabled(String worldName) {
-        this.logger.info("[" + this.pluginName + " Success] TallNether appears to already be enabled for this world.");
-        this.logger.info(
-                "[" + this.pluginName + " Success] The world '" + worldName + "' will have a 256-block high nether!");
+        this.logger.info("[" + this.pluginName + " Success] FarLandsAgain appears to already be enabled for this world.");
     }
 
     public void restoreFailed(String worldName) {
-        this.logger.info("[" + this.pluginName + " Error] Something went wrong while restoring the original Nether generation.");
+        this.logger.info("[" + this.pluginName + " Error] Something went wrong while restoring the original world generation.");
     }
 }

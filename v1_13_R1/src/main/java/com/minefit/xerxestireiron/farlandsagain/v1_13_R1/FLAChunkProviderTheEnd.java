@@ -2,8 +2,6 @@ package com.minefit.xerxestireiron.farlandsagain.v1_13_R1;
 
 import java.util.List;
 
-import org.bukkit.configuration.ConfigurationSection;
-
 import net.minecraft.server.v1_13_R1.BiomeBase;
 import net.minecraft.server.v1_13_R1.BlockPosition;
 import net.minecraft.server.v1_13_R1.Blocks;
@@ -37,19 +35,22 @@ public class FLAChunkProviderTheEnd extends ChunkGeneratorAbstract<GeneratorSett
     private final IBlockData o;
     private final IBlockData p;
 
-    public FLAChunkProviderTheEnd(GeneratorAccess generatoraccess, WorldChunkManager worldchunkmanager, GeneratorSettingsEnd generatorsettingsend, ConfigurationSection worldConfig) {
+    private final ConfigValues configValues;
+
+    public FLAChunkProviderTheEnd(GeneratorAccess generatoraccess, WorldChunkManager worldchunkmanager, GeneratorSettingsEnd generatorsettingsend, ConfigValues configValues) {
         super(generatoraccess, worldchunkmanager);
+        this.configValues = configValues;
         this.n = generatorsettingsend;
         this.o = this.n.r();
         this.p = this.n.s();
         this.m = generatorsettingsend.t();
         SeededRandom seededrandom = new SeededRandom(this.b);
 
-        this.g = new NoiseGeneratorOctaves(worldConfig, seededrandom, 16);
-        this.h = new NoiseGeneratorOctaves(worldConfig, seededrandom, 16);
-        this.i = new NoiseGeneratorOctaves(worldConfig, seededrandom, 8);
-        this.j = new NoiseGeneratorOctaves(worldConfig, seededrandom, 10);
-        this.k = new NoiseGeneratorOctaves(worldConfig, seededrandom, 16);
+        this.g = new NoiseGeneratorOctaves(this.configValues, seededrandom, 16);
+        this.h = new NoiseGeneratorOctaves(this.configValues, seededrandom, 16);
+        this.i = new NoiseGeneratorOctaves(this.configValues, seededrandom, 8);
+        this.j = new NoiseGeneratorOctaves(this.configValues, seededrandom, 10);
+        this.k = new NoiseGeneratorOctaves(this.configValues, seededrandom, 16);
         seededrandom.a(262);
         this.l = new NoiseGenerator3(new SeededRandom(this.b), 4);
     }

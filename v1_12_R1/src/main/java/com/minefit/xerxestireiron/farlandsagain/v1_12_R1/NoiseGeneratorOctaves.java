@@ -16,13 +16,13 @@ public class NoiseGeneratorOctaves extends NoiseGenerator {
     private final int highX;
     private final int highZ;
 
-    public NoiseGeneratorOctaves(ConfigurationSection config, Random random, int i) {
+    public NoiseGeneratorOctaves(ConfigValues configValues, Random random, int i) {
         this.b = i;
         this.a = new NoiseGeneratorPerlin[i];
-        this.lowX = config.getInt("lowX", -12550824) / 4;
-        this.lowZ = config.getInt("lowZ", -12550824) / 4;
-        this.highX = config.getInt("highX", 12550824) / 4;
-        this.highZ = config.getInt("highZ", 12550824) / 4;
+        this.lowX = configValues.farLandsLowX / 4;
+        this.lowZ = configValues.farLandsLowZ / 4;
+        this.highX = configValues.farLandsHighX / 4;
+        this.highZ = configValues.farLandsHighZ / 4;
 
         for (int j = 0; j < i; ++j) {
             this.a[j] = new NoiseGeneratorPerlin(random);

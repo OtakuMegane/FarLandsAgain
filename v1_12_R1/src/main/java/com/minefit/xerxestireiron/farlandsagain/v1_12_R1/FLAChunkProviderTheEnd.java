@@ -2,9 +2,6 @@ package com.minefit.xerxestireiron.farlandsagain.v1_12_R1;
 
 import java.util.Random;
 
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
-
 import net.minecraft.server.v1_12_R1.BiomeBase;
 import net.minecraft.server.v1_12_R1.BlockChorusFlower;
 import net.minecraft.server.v1_12_R1.BlockFalling;
@@ -48,24 +45,21 @@ public class FLAChunkProviderTheEnd extends ChunkProviderTheEnd implements Chunk
     double[] g;
     private final WorldGenEndIsland s = new WorldGenEndIsland();
 
-    private final PaperSpigot paperSpigot;
-    private final ConfigurationSection worldConfig;
+    private final ConfigValues configValues;
 
-    public FLAChunkProviderTheEnd(World world, boolean flag, long i, BlockPosition blockposition, ConfigurationSection worldConfig) {
+    public FLAChunkProviderTheEnd(World world, boolean flag, long i, BlockPosition blockposition, ConfigValues configValues) {
         super(world, flag, i, blockposition);
-        this.worldConfig = worldConfig;
+        this.configValues = configValues;
         this.l = world;
         this.m = flag;
         this.n = blockposition;
         this.h = new Random(i);
-        this.i = new NoiseGeneratorOctaves(this.worldConfig, this.h, 16);
-        this.j = new NoiseGeneratorOctaves(this.worldConfig, this.h, 16);
-        this.k = new NoiseGeneratorOctaves(this.worldConfig, this.h, 8);
-        this.c = new NoiseGeneratorOctaves(this.worldConfig, this.h, 10);
-        this.d = new NoiseGeneratorOctaves(this.worldConfig, this.h, 16);
+        this.i = new NoiseGeneratorOctaves(this.configValues, this.h, 16);
+        this.j = new NoiseGeneratorOctaves(this.configValues, this.h, 16);
+        this.k = new NoiseGeneratorOctaves(this.configValues, this.h, 8);
+        this.c = new NoiseGeneratorOctaves(this.configValues, this.h, 10);
+        this.d = new NoiseGeneratorOctaves(this.configValues, this.h, 16);
         this.p = new NoiseGenerator3Handler(this.h);
-
-        this.paperSpigot = new PaperSpigot(world.worldData.getName(), Bukkit.getName().contains("Paper"));
     }
 
     @Override
