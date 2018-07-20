@@ -1,6 +1,7 @@
 name: FarLandsAgain
 main: com.minefit.xerxestireiron.farlandsagain.FarLandsAgain
-version: 1.5
+version: 2.0
 author: XerxesTireIron
 description: Fixes noise generator so that Far Lands generate again :D
 load: startup
+api-version: 1.13

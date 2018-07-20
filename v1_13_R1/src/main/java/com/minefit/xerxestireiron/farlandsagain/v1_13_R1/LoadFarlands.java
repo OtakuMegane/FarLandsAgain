@@ -117,7 +117,7 @@ public class LoadFarlands {
             return originalGenName.equals("SkyLandsChunkGenerator") || originalGenName.equals("TimedChunkGenerator");
         }
 
-        return true;
+        return false;
     }
 
     private boolean setGenerator(ChunkGenerator<?> generator) {
