@@ -2,7 +2,6 @@ package com.minefit.xerxestireiron.farlandsagain.v1_13_R1;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.logging.Logger;
 
 import org.bukkit.World;
 import org.bukkit.World.Environment;
@@ -11,7 +10,6 @@ import org.bukkit.craftbukkit.v1_13_R1.CraftWorld;
 
 import com.minefit.xerxestireiron.farlandsagain.Messages;
 
-import net.minecraft.server.v1_13_R1.BiomeBase;
 import net.minecraft.server.v1_13_R1.BiomeLayout;
 import net.minecraft.server.v1_13_R1.BiomeLayoutOverworldConfiguration;
 import net.minecraft.server.v1_13_R1.BiomeLayoutTheEndConfiguration;
@@ -23,10 +21,6 @@ import net.minecraft.server.v1_13_R1.ChunkTaskScheduler;
 import net.minecraft.server.v1_13_R1.GeneratorSettingsEnd;
 import net.minecraft.server.v1_13_R1.GeneratorSettingsNether;
 import net.minecraft.server.v1_13_R1.GeneratorSettingsOverworld;
-import net.minecraft.server.v1_13_R1.IChunkLoader;
-import net.minecraft.server.v1_13_R1.SchedulerBatch;
-import net.minecraft.server.v1_13_R1.WorldGenMushrooms;
-import net.minecraft.server.v1_13_R1.WorldProvider;
 import net.minecraft.server.v1_13_R1.WorldServer;
 
 public class LoadFarlands {
@@ -34,7 +28,6 @@ public class LoadFarlands {
     private final WorldServer nmsWorld;
     private final String worldName;
     private String originalGenName;
-    private WorldProvider worldProvider;
     private final Messages messages;
     private ChunkGenerator<?> originalGenerator;
     private final ConfigurationSection worldConfig;
@@ -49,19 +42,17 @@ public class LoadFarlands {
         this.messages = new Messages(pluginName);
         this.originalGenerator = this.nmsWorld.getChunkProviderServer().chunkGenerator;
         this.originalGenName = this.originalGenerator.getClass().getSimpleName();
-        this.worldProvider = this.nmsWorld.worldProvider;
         overrideGenerator();
     }
 
     public void restoreGenerator() {
         if (this.enabled) {
-            try {
-                Field cp = net.minecraft.server.v1_13_R1.ChunkProviderServer.class.getDeclaredField("chunkGenerator");
-                cp.setAccessible(true);
-                setFinal(cp, this.originalGenerator, this.nmsWorld.getChunkProviderServer());
-            } catch (Exception e) {
-                e.printStackTrace();
+            setGenerator(this.originalGenerator);
+
+            if (!setGenerator(this.originalGenerator)) {
+                this.messages.restoreFailed(this.worldName);
             }
+
             this.enabled = false;
         }
     }
@@ -70,25 +61,11 @@ public class LoadFarlands {
         String worldName = this.world.getName();
         Environment environment = this.world.getEnvironment();
 
-        //String genOptions = this.nmsWorld.getWorldData().getGeneratorOptions();
-
         if (originalGenName.equals("FLAChunkProviderGenerate") || originalGenName.equals("FLAChunkProviderHell")
                 || originalGenName.equals("FLAChunkProviderTheEnd")) {
             this.messages.alreadyEnabled(worldName);
             return;
         }
-
-        try {
-            // Fixes placing mushrooms outside of range when changing height + work around hardcoded values
-            Field ah = net.minecraft.server.v1_13_R1.WorldGenerator.class.getDeclaredField("ah");
-            ah.setAccessible(true);
-            setFinal(ah, new FLAWorldGenMushrooms(), null);
-            ah.setAccessible(false);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        //BiomeBase.t();
 
         try {
             if (environment == Environment.NORMAL) {
@@ -145,26 +122,22 @@ public class LoadFarlands {
         }
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     private boolean setGenerator(ChunkGenerator<?> generator) {
         try {
             Field chunkGenerator = net.minecraft.server.v1_13_R1.ChunkProviderServer.class
                     .getDeclaredField("chunkGenerator");
             chunkGenerator.setAccessible(true);
             setFinal(chunkGenerator, generator, this.nmsWorld.getChunkProviderServer());
-
-            Field chunkLoader = net.minecraft.server.v1_13_R1.ChunkProviderServer.class.getDeclaredField("chunkLoader");
-            chunkLoader.setAccessible(true);
-            IChunkLoader ichunkLoader = (IChunkLoader) chunkLoader.get(this.nmsWorld.getChunkProviderServer());
-            ChunkTaskScheduler newScheduler = new ChunkTaskScheduler(0, this.nmsWorld, generator, ichunkLoader,
-                    this.nmsWorld);
+            chunkGenerator.setAccessible(false);
 
             Field scheduler = net.minecraft.server.v1_13_R1.ChunkProviderServer.class.getDeclaredField("f");
             scheduler.setAccessible(true);
-            setFinal(scheduler, newScheduler, this.nmsWorld.getChunkProviderServer());
-            Field g = net.minecraft.server.v1_13_R1.ChunkProviderServer.class.getDeclaredField("g");
-            g.setAccessible(true);
-            setFinal(g, new SchedulerBatch(newScheduler), this.nmsWorld.getChunkProviderServer());
+            ChunkTaskScheduler taskScheduler = (ChunkTaskScheduler) scheduler.get(this.nmsWorld.getChunkProviderServer());
+            Field schedulerGenerator = taskScheduler.getClass().getDeclaredField("d");
+            schedulerGenerator.setAccessible(true);
+            setFinal(schedulerGenerator, generator, taskScheduler);
+            scheduler.setAccessible(false);
+            schedulerGenerator.setAccessible(false);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
