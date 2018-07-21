@@ -49,8 +49,6 @@ public class LoadFarlands {
 
     public void restoreGenerator() {
         if (this.enabled) {
-            setGenerator(this.originalGenerator);
-
             if (!setGenerator(this.originalGenerator)) {
                 this.messages.restoreFailed(this.worldName);
             }
@@ -76,8 +74,8 @@ public class LoadFarlands {
         if (environment == Environment.NORMAL) {
             GeneratorSettingsOverworld generatorsettingsoverworld = new GeneratorSettingsOverworld();
             FLAChunkProviderGenerate generator = new FLAChunkProviderGenerate(this.nmsWorld,
-                    BiomeLayout.d.a(BiomeLayout.d.a()
-                            .a(new GeneratorSettingsOverworld()).a(this.nmsWorld.getWorldData())),
+                    BiomeLayout.d
+                            .a(BiomeLayout.d.a().a(new GeneratorSettingsOverworld()).a(this.nmsWorld.getWorldData())),
                     generatorsettingsoverworld, this.configValues);
             this.enabled = setGenerator(generator);
         } else if (environment == Environment.NETHER) {
@@ -93,8 +91,8 @@ public class LoadFarlands {
             generatorsettingsend.b(Blocks.AIR.getBlockData());
             generatorsettingsend.a(this.nmsWorld.worldProvider.d());
             FLAChunkProviderTheEnd generator = new FLAChunkProviderTheEnd(this.nmsWorld,
-                    BiomeLayout.e.a(BiomeLayout.e.a().a(this.nmsWorld.getSeed())),
-                    generatorsettingsend, this.configValues);
+                    BiomeLayout.e.a(BiomeLayout.e.a().a(this.nmsWorld.getSeed())), generatorsettingsend,
+                    this.configValues);
             this.enabled = setGenerator(generator);
         } else {
             this.enabled = false;
@@ -125,17 +123,14 @@ public class LoadFarlands {
             Field chunkGenerator = this.chunkServer.getClass().getDeclaredField("chunkGenerator");
             chunkGenerator.setAccessible(true);
             setFinal(chunkGenerator, generator, this.chunkServer);
-            chunkGenerator.setAccessible(false);
 
-            Field scheduler = net.minecraft.server.v1_13_R1.ChunkProviderServer.class.getDeclaredField("f");
+            Field scheduler = this.chunkServer.getClass().getDeclaredField("f");
             scheduler.setAccessible(true);
-            ChunkTaskScheduler taskScheduler = (ChunkTaskScheduler) scheduler
-                    .get(this.chunkServer);
+            ChunkTaskScheduler taskScheduler = (ChunkTaskScheduler) scheduler.get(this.chunkServer);
+
             Field schedulerGenerator = taskScheduler.getClass().getDeclaredField("d");
             schedulerGenerator.setAccessible(true);
             setFinal(schedulerGenerator, generator, taskScheduler);
-            scheduler.setAccessible(false);
-            schedulerGenerator.setAccessible(false);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -144,13 +139,11 @@ public class LoadFarlands {
         return true;
     }
 
-    private void setFinal(Field field, Object obj, Object instance) throws Exception {
+    public void setFinal(Field field, Object instance, Object obj) throws Exception {
         field.setAccessible(true);
-
-        Field mf = Field.class.getDeclaredField("modifiers");
-        mf.setAccessible(true);
-        mf.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-
+        Field modifiers = Field.class.getDeclaredField("modifiers");
+        modifiers.setAccessible(true);
+        modifiers.setInt(field, field.getModifiers() & ~Modifier.FINAL);
         field.set(instance, obj);
     }
 }

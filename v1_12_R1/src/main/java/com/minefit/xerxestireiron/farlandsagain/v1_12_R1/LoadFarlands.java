@@ -47,11 +47,6 @@ public class LoadFarlands {
 
             this.enabled = false;
         }
-        try {
-            setGenerator(this.originalGenerator);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public void overrideGenerator() {
@@ -112,7 +107,6 @@ public class LoadFarlands {
             Field chunkGenerator = this.chunkServer.getClass().getDeclaredField("chunkGenerator");
             chunkGenerator.setAccessible(true);
             setFinal(chunkGenerator, generator, this.chunkServer);
-            chunkGenerator.setAccessible(false);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -121,13 +115,11 @@ public class LoadFarlands {
         return true;
     }
 
-    private void setFinal(Field field, Object obj, Object instance) throws Exception {
+    public void setFinal(Field field, Object instance, Object obj) throws Exception {
         field.setAccessible(true);
-
-        Field mf = Field.class.getDeclaredField("modifiers");
-        mf.setAccessible(true);
-        mf.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-
+        Field modifiers = Field.class.getDeclaredField("modifiers");
+        modifiers.setAccessible(true);
+        modifiers.setInt(field, field.getModifiers() & ~Modifier.FINAL);
         field.set(instance, obj);
     }
 }

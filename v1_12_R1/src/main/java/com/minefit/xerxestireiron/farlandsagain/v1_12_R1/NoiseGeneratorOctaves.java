@@ -2,8 +2,6 @@ package com.minefit.xerxestireiron.farlandsagain.v1_12_R1;
 
 import java.util.Random;
 
-import org.bukkit.configuration.ConfigurationSection;
-
 import net.minecraft.server.v1_12_R1.MathHelper;
 import net.minecraft.server.v1_12_R1.NoiseGenerator;
 import net.minecraft.server.v1_12_R1.NoiseGeneratorPerlin;
