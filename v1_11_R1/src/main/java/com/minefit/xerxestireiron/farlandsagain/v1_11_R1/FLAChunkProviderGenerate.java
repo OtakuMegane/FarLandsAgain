@@ -3,9 +3,6 @@ package com.minefit.xerxestireiron.farlandsagain.v1_11_R1;
 import java.util.List;
 import java.util.Random;
 
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
-
 import net.minecraft.server.v1_11_R1.BiomeBase;
 import net.minecraft.server.v1_11_R1.Biomes;
 import net.minecraft.server.v1_11_R1.BlockFalling;
@@ -68,12 +65,11 @@ public class FLAChunkProviderGenerate extends ChunkProviderGenerate {
     double[] g;
     double[] h;
 
-    private final PaperSpigot paperSpigot;
-    private final ConfigurationSection worldConfig;
+    private final ConfigValues configValues;
 
-    public FLAChunkProviderGenerate(World world, long i, boolean flag, String s, ConfigurationSection worldConfig) {
+    public FLAChunkProviderGenerate(World world, long i, boolean flag, String s, ConfigValues configValues) {
         super(world, i, flag, s);
-        this.worldConfig = worldConfig;
+        this.configValues = configValues;
         this.t = Blocks.WATER.getBlockData();
         this.u = new double[256];
         this.v = new WorldGenCaves();
@@ -88,17 +84,15 @@ public class FLAChunkProviderGenerate extends ChunkProviderGenerate {
         this.o = flag;
         this.p = world.getWorldData().getType();
         this.i = new Random(i);
-        this.j = new NoiseGeneratorOctaves(this.worldConfig, this.i, 16);
-        this.k = new NoiseGeneratorOctaves(this.worldConfig, this.i, 16);
-        this.l = new NoiseGeneratorOctaves(this.worldConfig, this.i, 8);
+        this.j = new NoiseGeneratorOctaves(this.configValues, this.i, 16);
+        this.k = new NoiseGeneratorOctaves(this.configValues, this.i, 16);
+        this.l = new NoiseGeneratorOctaves(this.configValues, this.i, 8);
         this.m = new NoiseGenerator3(this.i, 4);
-        this.b = new NoiseGeneratorOctaves(this.worldConfig, this.i, 10);
-        this.c = new NoiseGeneratorOctaves(this.worldConfig, this.i, 16);
-        this.d = new NoiseGeneratorOctaves(this.worldConfig, this.i, 8);
+        this.b = new NoiseGeneratorOctaves(this.configValues, this.i, 10);
+        this.c = new NoiseGeneratorOctaves(this.configValues, this.i, 16);
+        this.d = new NoiseGeneratorOctaves(this.configValues, this.i, 8);
         this.q = new double[825];
         this.r = new float[25];
-
-        this.paperSpigot = new PaperSpigot(world.worldData.getName(), Bukkit.getName().contains("Paper"));
 
         for (int j = -2; j <= 2; ++j) {
             for (int k = -2; k <= 2; ++k) {
@@ -201,32 +195,32 @@ public class FLAChunkProviderGenerate extends ChunkProviderGenerate {
         this.a(i, j, chunksnapshot);
         this.D = this.n.getWorldChunkManager().getBiomeBlock(this.D, i * 16, j * 16, 16, 16);
         this.a(i, j, chunksnapshot, this.D);
-        if (this.s.r && this.paperSpigot.generateCaves) {
+        if (this.s.r && this.configValues.paperSpigot.generateCaves) {
             this.v.a(this.n, i, j, chunksnapshot);
         }
 
-        if (this.s.A && this.paperSpigot.generateCanyon) {
+        if (this.s.A && this.configValues.paperSpigot.generateCanyon) {
             this.A.a(this.n, i, j, chunksnapshot);
         }
 
         if (this.o) {
-            if (this.s.w && this.paperSpigot.generateMineshaft) {
+            if (this.s.w && this.configValues.paperSpigot.generateMineshaft) {
                 this.y.a(this.n, i, j, chunksnapshot);
             }
 
-            if (this.s.v && this.paperSpigot.generateVillage) {
+            if (this.s.v && this.configValues.paperSpigot.generateVillage) {
                 this.x.a(this.n, i, j, chunksnapshot);
             }
 
-            if (this.s.u && this.paperSpigot.generateStronghold) {
+            if (this.s.u && this.configValues.paperSpigot.generateStronghold) {
                 this.w.a(this.n, i, j, chunksnapshot);
             }
 
-            if (this.s.x && this.paperSpigot.generateTemple) {
+            if (this.s.x && this.configValues.paperSpigot.generateTemple) {
                 this.z.a(this.n, i, j, chunksnapshot);
             }
 
-            if (this.s.y && this.paperSpigot.generateMonument) {
+            if (this.s.y && this.configValues.paperSpigot.generateMonument) {
                 this.B.a(this.n, i, j, chunksnapshot);
             }
 
@@ -367,23 +361,23 @@ public class FLAChunkProviderGenerate extends ChunkProviderGenerate {
         ChunkCoordIntPair chunkcoordintpair = new ChunkCoordIntPair(i, j);
 
         if (this.o) {
-            if (this.s.w && this.paperSpigot.generateMineshaft) {
+            if (this.s.w && this.configValues.paperSpigot.generateMineshaft) {
                 this.y.a(this.n, this.i, chunkcoordintpair);
             }
 
-            if (this.s.v && this.paperSpigot.generateVillage) {
+            if (this.s.v && this.configValues.paperSpigot.generateVillage) {
                 flag = this.x.a(this.n, this.i, chunkcoordintpair);
             }
 
-            if (this.s.u && this.paperSpigot.generateStronghold) {
+            if (this.s.u && this.configValues.paperSpigot.generateStronghold) {
                 this.w.a(this.n, this.i, chunkcoordintpair);
             }
 
-            if (this.s.x && this.paperSpigot.generateTemple) {
+            if (this.s.x && this.configValues.paperSpigot.generateTemple) {
                 this.z.a(this.n, this.i, chunkcoordintpair);
             }
 
-            if (this.s.y && this.paperSpigot.generateMonument) {
+            if (this.s.y && this.configValues.paperSpigot.generateMonument) {
                 this.B.a(this.n, this.i, chunkcoordintpair);
             }
 
@@ -412,7 +406,7 @@ public class FLAChunkProviderGenerate extends ChunkProviderGenerate {
             }
         }
 
-        if (this.s.s && this.paperSpigot.generateDungeon) {
+        if (this.s.s && this.configValues.paperSpigot.generateDungeon) {
             for (k1 = 0; k1 < this.s.t; ++k1) {
                 l1 = this.i.nextInt(16) + 8;
                 i2 = this.i.nextInt(256);
@@ -493,23 +487,23 @@ public class FLAChunkProviderGenerate extends ChunkProviderGenerate {
     @Override
     public void recreateStructures(Chunk chunk, int i, int j) {
         if (this.o) {
-            if (this.s.w && this.paperSpigot.generateMineshaft) {
+            if (this.s.w && this.configValues.paperSpigot.generateMineshaft) {
                 this.y.a(this.n, i, j, (ChunkSnapshot) null);
             }
 
-            if (this.s.v && this.paperSpigot.generateVillage) {
+            if (this.s.v && this.configValues.paperSpigot.generateVillage) {
                 this.x.a(this.n, i, j, (ChunkSnapshot) null);
             }
 
-            if (this.s.u && this.paperSpigot.generateStronghold) {
+            if (this.s.u && this.configValues.paperSpigot.generateStronghold) {
                 this.w.a(this.n, i, j, (ChunkSnapshot) null);
             }
 
-            if (this.s.x && this.paperSpigot.generateTemple) {
+            if (this.s.x && this.configValues.paperSpigot.generateTemple) {
                 this.z.a(this.n, i, j, (ChunkSnapshot) null);
             }
 
-            if (this.s.y && this.paperSpigot.generateMonument) {
+            if (this.s.y && this.configValues.paperSpigot.generateMonument) {
                 this.B.a(this.n, i, j, (ChunkSnapshot) null);
             }
 

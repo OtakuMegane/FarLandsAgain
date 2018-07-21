@@ -3,8 +3,6 @@ package com.minefit.xerxestireiron.farlandsagain.v1_9_R1;
 import java.util.List;
 import java.util.Random;
 
-import org.bukkit.configuration.ConfigurationSection;
-
 import net.minecraft.server.v1_9_R1.BiomeBase;
 import net.minecraft.server.v1_9_R1.BlockFalling;
 import net.minecraft.server.v1_9_R1.BlockPosition;
@@ -68,10 +66,10 @@ public class FLAChunkProviderHell implements ChunkGenerator {
     double[] l;
     double[] m;
 
-    private final ConfigurationSection worldConfig;
+    private final ConfigValues configValues;
 
-    public FLAChunkProviderHell(World world, boolean flag, long i, ConfigurationSection worldConfig) {
-        this.worldConfig = worldConfig;
+    public FLAChunkProviderHell(World world, boolean flag, long i, ConfigValues configValues) {
+        this.configValues = configValues;
         this.C = new WorldGenMinable(Blocks.QUARTZ_ORE.getBlockData(), 14, BlockPredicate.a(Blocks.NETHERRACK));
         this.D = new WorldGenHellLava(Blocks.FLOWING_LAVA, true);
         this.E = new WorldGenHellLava(Blocks.FLOWING_LAVA, false);
@@ -82,13 +80,13 @@ public class FLAChunkProviderHell implements ChunkGenerator {
         this.n = world;
         this.o = flag;
         this.p = new Random(i);
-        this.u = new NoiseGeneratorOctaves(this.worldConfig, this.p, 16);
-        this.v = new NoiseGeneratorOctaves(this.worldConfig, this.p, 16);
-        this.w = new NoiseGeneratorOctaves(this.worldConfig, this.p, 8);
-        this.x = new NoiseGeneratorOctaves(this.worldConfig, this.p, 4);
-        this.y = new NoiseGeneratorOctaves(this.worldConfig, this.p, 4);
-        this.g = new NoiseGeneratorOctaves(this.worldConfig, this.p, 10);
-        this.h = new NoiseGeneratorOctaves(this.worldConfig, this.p, 16);
+        this.u = new NoiseGeneratorOctaves(this.configValues, this.p, 16);
+        this.v = new NoiseGeneratorOctaves(this.configValues, this.p, 16);
+        this.w = new NoiseGeneratorOctaves(this.configValues, this.p, 8);
+        this.x = new NoiseGeneratorOctaves(this.configValues, this.p, 4);
+        this.y = new NoiseGeneratorOctaves(this.configValues, this.p, 4);
+        this.g = new NoiseGeneratorOctaves(this.configValues, this.p, 10);
+        this.h = new NoiseGeneratorOctaves(this.configValues, this.p, 16);
         world.b(63);
     }
 

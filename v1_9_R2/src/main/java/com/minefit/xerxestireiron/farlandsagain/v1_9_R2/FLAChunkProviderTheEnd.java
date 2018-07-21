@@ -3,11 +3,6 @@ package com.minefit.xerxestireiron.farlandsagain.v1_9_R2;
 import java.util.List;
 import java.util.Random;
 
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
-
-import com.minefit.xerxestireiron.farlandsagain.v1_9_R2.PaperSpigot;
-
 import net.minecraft.server.v1_9_R2.BiomeBase;
 import net.minecraft.server.v1_9_R2.BlockChorusFlower;
 import net.minecraft.server.v1_9_R2.BlockFalling;
@@ -48,23 +43,20 @@ public class FLAChunkProviderTheEnd extends ChunkProviderTheEnd implements Chunk
     double[] g;
     private final WorldGenEndIsland r = new WorldGenEndIsland();
 
-    private final PaperSpigot paperSpigot;
-    private final ConfigurationSection worldConfig;
+    private final ConfigValues configValues;
 
-    public FLAChunkProviderTheEnd(World world, boolean flag, long i, BlockPosition blockposition, ConfigurationSection worldConfig) {
+    public FLAChunkProviderTheEnd(World world, boolean flag, long i, BlockPosition blockposition, ConfigValues configValues) {
         super(world, flag, i);
-        this.worldConfig = worldConfig;
+        this.configValues = configValues;
         this.l = world;
         this.m = flag;
         this.h = new Random(i);
-        this.i = new NoiseGeneratorOctaves(this.worldConfig, this.h, 16);
-        this.j = new NoiseGeneratorOctaves(this.worldConfig, this.h, 16);
-        this.k = new NoiseGeneratorOctaves(this.worldConfig, this.h, 8);
-        this.c = new NoiseGeneratorOctaves(this.worldConfig, this.h, 10);
-        this.d = new NoiseGeneratorOctaves(this.worldConfig, this.h, 16);
+        this.i = new NoiseGeneratorOctaves(this.configValues, this.h, 16);
+        this.j = new NoiseGeneratorOctaves(this.configValues, this.h, 16);
+        this.k = new NoiseGeneratorOctaves(this.configValues, this.h, 8);
+        this.c = new NoiseGeneratorOctaves(this.configValues, this.h, 10);
+        this.d = new NoiseGeneratorOctaves(this.configValues, this.h, 16);
         this.o = new NoiseGenerator3Handler(this.h);
-
-        this.paperSpigot = new PaperSpigot(world.worldData.getName(), Bukkit.getName().contains("Paper"));
     }
 
     @Override

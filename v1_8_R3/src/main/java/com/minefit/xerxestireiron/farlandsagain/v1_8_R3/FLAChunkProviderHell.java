@@ -2,8 +2,6 @@ package com.minefit.xerxestireiron.farlandsagain.v1_8_R3;
 
 import java.util.Random;
 
-import org.bukkit.configuration.ConfigurationSection;
-
 import net.minecraft.server.v1_8_R3.BiomeBase;
 import net.minecraft.server.v1_8_R3.BlockPosition;
 import net.minecraft.server.v1_8_R3.Blocks;
@@ -43,23 +41,23 @@ public class FLAChunkProviderHell extends ChunkProviderHell implements IChunkPro
     double[] f;
     double[] g;
 
-    private final ConfigurationSection worldConfig;
+    private final ConfigValues configValues;
 
-    public FLAChunkProviderHell(World world, boolean flag, long i, ConfigurationSection worldConfig) {
+    public FLAChunkProviderHell(World world, boolean flag, long i, ConfigValues configValues) {
         super(world, flag, i);
-        this.worldConfig = worldConfig;
+        this.configValues = configValues;
         this.B = new WorldGenNether();
         this.C = new WorldGenCavesHell();
         this.h = world;
         this.i = flag;
         this.j = new Random(i);
-        this.o = new NoiseGeneratorOctaves(this.worldConfig, this.j, 16);
-        this.p = new NoiseGeneratorOctaves(this.worldConfig, this.j, 16);
-        this.q = new NoiseGeneratorOctaves(this.worldConfig, this.j, 8);
-        this.r = new NoiseGeneratorOctaves(this.worldConfig, this.j, 4);
-        this.s = new NoiseGeneratorOctaves(this.worldConfig, this.j, 4);
-        this.a = new NoiseGeneratorOctaves(this.worldConfig, this.j, 10);
-        this.b = new NoiseGeneratorOctaves(this.worldConfig, this.j, 16);
+        this.o = new NoiseGeneratorOctaves(this.configValues, this.j, 16);
+        this.p = new NoiseGeneratorOctaves(this.configValues, this.j, 16);
+        this.q = new NoiseGeneratorOctaves(this.configValues, this.j, 8);
+        this.r = new NoiseGeneratorOctaves(this.configValues, this.j, 4);
+        this.s = new NoiseGeneratorOctaves(this.configValues, this.j, 4);
+        this.a = new NoiseGeneratorOctaves(this.configValues, this.j, 10);
+        this.b = new NoiseGeneratorOctaves(this.configValues, this.j, 16);
         world.b(63);
     }
 

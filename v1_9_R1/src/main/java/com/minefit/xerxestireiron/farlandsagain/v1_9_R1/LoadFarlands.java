@@ -9,42 +9,47 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.craftbukkit.v1_9_R1.CraftWorld;
 
 import com.minefit.xerxestireiron.farlandsagain.Messages;
-import com.minefit.xerxestireiron.farlandsagain.v1_9_R1.FLAChunkProviderGenerate;
-import com.minefit.xerxestireiron.farlandsagain.v1_9_R1.FLAChunkProviderHell;
-import com.minefit.xerxestireiron.farlandsagain.v1_9_R1.FLAChunkProviderTheEnd;
 
+import net.minecraft.server.v1_9_R1.ChunkProviderServer;
 import net.minecraft.server.v1_9_R1.ChunkGenerator;
 import net.minecraft.server.v1_9_R1.WorldServer;
 
 public class LoadFarlands {
     private final World world;
     private final WorldServer nmsWorld;
+    private final String worldName;
+    private String originalGenName;
     private final Messages messages;
     private ChunkGenerator originalGenerator;
     private final ConfigurationSection worldConfig;
+    private ChunkProviderServer chunkProviderServer;
+    private boolean enabled = false;
+    public final ConfigValues configValues;
 
     public LoadFarlands(World world, ConfigurationSection worldConfig, String pluginName) {
         this.world = world;
         this.worldConfig = worldConfig;
+        this.worldName = this.world.getName();
         this.nmsWorld = ((CraftWorld) world).getHandle();
         this.messages = new Messages(pluginName);
+        this.configValues = new ConfigValues(this.worldName, this.worldConfig);
+        this.chunkProviderServer = this.nmsWorld.getChunkProviderServer();
+        this.originalGenerator = this.nmsWorld.getChunkProviderServer().chunkGenerator;
+        this.originalGenName = this.originalGenerator.getClass().getSimpleName();
         overrideGenerator();
     }
 
     public void restoreGenerator() {
-        try {
-            Field cp = net.minecraft.server.v1_9_R1.ChunkProviderServer.class.getDeclaredField("chunkGenerator");
-            cp.setAccessible(true);
-            setFinal(cp, this.originalGenerator);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (this.enabled) {
+            if (!setGenerator(this.originalGenerator)) {
+                this.messages.restoreFailed(this.worldName);
+            }
+
+            this.enabled = false;
         }
     }
 
     public void overrideGenerator() {
-        String worldName = this.world.getName();
-        this.originalGenerator = this.nmsWorld.getChunkProviderServer().chunkGenerator;
-        String originalGenName = this.originalGenerator.getClass().getSimpleName();
         boolean genFeatures = this.nmsWorld.getWorldData().shouldGenerateMapFeatures();
         long worldSeed = this.nmsWorld.getSeed();
         Environment environment = this.world.getEnvironment();
@@ -52,58 +57,72 @@ public class LoadFarlands {
 
         if (originalGenName.equals("FLAChunkProviderGenerate") || originalGenName.equals("FLAChunkProviderHell")
                 || originalGenName.equals("FLAChunkProviderTheEnd")) {
-            this.messages.alreadyEnabled(worldName);
+            this.messages.alreadyEnabled(this.worldName);
             return;
         }
 
-        try {
-            Field cp = net.minecraft.server.v1_9_R1.ChunkProviderServer.class.getDeclaredField("chunkGenerator");
-            cp.setAccessible(true);
-
-            if (environment == Environment.NORMAL) {
-                if (!originalGenName.equals("NormalChunkGenerator")) {
-                    this.messages.unknownGenerator(worldName, originalGenName);
-                    return;
-                }
-
-                FLAChunkProviderGenerate generator = new FLAChunkProviderGenerate(this.nmsWorld, worldSeed, genFeatures,
-                        genOptions, this.worldConfig);
-                setFinal(cp, generator);
-            } else if (environment == Environment.NETHER) {
-                if (!originalGenName.equals("NetherChunkGenerator")) {
-                    this.messages.unknownGenerator(worldName, originalGenName);
-                    return;
-                }
-
-                FLAChunkProviderHell generator = new FLAChunkProviderHell(this.nmsWorld, genFeatures, worldSeed,
-                        this.worldConfig);
-                setFinal(cp, generator);
-            } else if (environment == Environment.THE_END) {
-                if (!originalGenName.equals("SkyLandsChunkGenerator")) {
-                    this.messages.unknownGenerator(worldName, originalGenName);
-                    return;
-                }
-
-                FLAChunkProviderTheEnd generator = new FLAChunkProviderTheEnd(this.nmsWorld, genFeatures, worldSeed,
-                        this.nmsWorld.worldProvider.h(), this.worldConfig);
-                setFinal(cp, generator);
-            } else {
-                this.messages.unknownEnvironment(worldName, environment.toString());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (!isRecognizedGenerator(environment, this.originalGenName)) {
+            this.messages.unknownGenerator(this.worldName, originalGenName);
+            return;
         }
 
-        this.messages.enabledSuccessfully(worldName);
+        if (environment == Environment.NORMAL) {
+            FLAChunkProviderGenerate generator = new FLAChunkProviderGenerate(this.nmsWorld, worldSeed, genFeatures,
+                    genOptions, this.configValues);
+            this.enabled = setGenerator(generator);
+        } else if (environment == Environment.NETHER) {
+            FLAChunkProviderHell generator = new FLAChunkProviderHell(this.nmsWorld, genFeatures, worldSeed,
+                    this.configValues);
+            this.enabled = setGenerator(generator);
+        } else if (environment == Environment.THE_END) {
+            FLAChunkProviderTheEnd generator = new FLAChunkProviderTheEnd(this.nmsWorld, genFeatures, worldSeed,
+                    this.nmsWorld.worldProvider.h(), this.configValues);
+            this.enabled = setGenerator(generator);
+        } else {
+            this.enabled = false;
+            this.messages.unknownEnvironment(this.worldName, environment.toString());
+        }
+
+        if (this.enabled) {
+            this.messages.enableSuccess(this.worldName);
+        } else {
+            this.messages.enableFailed(this.worldName);
+        }
     }
 
-    public void setFinal(Field field, Object obj) throws Exception {
+    private boolean isRecognizedGenerator(Environment environment, String originalGenName) {
+        if (environment == Environment.NORMAL) {
+            return originalGenName.equals("NormalChunkGenerator") || originalGenName.equals("TimedChunkGenerator");
+        } else if (environment == Environment.NETHER) {
+            return originalGenName.equals("NetherChunkGenerator") || originalGenName.equals("TimedChunkGenerator");
+        } else if (environment == Environment.THE_END) {
+            return originalGenName.equals("SkyLandsChunkGenerator") || originalGenName.equals("TimedChunkGenerator");
+        }
+
+        return false;
+    }
+
+    private boolean setGenerator(ChunkGenerator generator) {
+        try {
+            Field chunkGenerator = this.chunkProviderServer.getClass().getDeclaredField("chunkGenerator");
+            chunkGenerator.setAccessible(true);
+            setFinal(chunkGenerator, generator, this.chunkProviderServer);
+            chunkGenerator.setAccessible(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
+    private void setFinal(Field field, Object obj, Object instance) throws Exception {
         field.setAccessible(true);
 
         Field mf = Field.class.getDeclaredField("modifiers");
         mf.setAccessible(true);
         mf.setInt(field, field.getModifiers() & ~Modifier.FINAL);
 
-        field.set(this.nmsWorld.getChunkProviderServer(), obj);
+        field.set(instance, obj);
     }
 }

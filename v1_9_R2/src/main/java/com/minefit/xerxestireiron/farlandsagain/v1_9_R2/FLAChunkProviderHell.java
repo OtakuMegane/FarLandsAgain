@@ -3,11 +3,6 @@ package com.minefit.xerxestireiron.farlandsagain.v1_9_R2;
 import java.util.List;
 import java.util.Random;
 
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
-
-import com.minefit.xerxestireiron.farlandsagain.v1_9_R2.PaperSpigot;
-
 import net.minecraft.server.v1_9_R2.BiomeBase;
 import net.minecraft.server.v1_9_R2.BlockFalling;
 import net.minecraft.server.v1_9_R2.BlockPosition;
@@ -71,11 +66,10 @@ public class FLAChunkProviderHell implements ChunkGenerator {
     double[] l;
     double[] m;
 
-    private final PaperSpigot paperSpigot;
-    private final ConfigurationSection worldConfig;
+    private final ConfigValues configValues;
 
-    public FLAChunkProviderHell(World world, boolean flag, long i, ConfigurationSection worldConfig) {
-        this.worldConfig = worldConfig;
+    public FLAChunkProviderHell(World world, boolean flag, long i, ConfigValues configValues) {
+        this.configValues = configValues;
         this.C = new WorldGenMinable(Blocks.QUARTZ_ORE.getBlockData(), 14, BlockPredicate.a(Blocks.NETHERRACK));
         this.D = new WorldGenHellLava(Blocks.FLOWING_LAVA, true);
         this.E = new WorldGenHellLava(Blocks.FLOWING_LAVA, false);
@@ -86,16 +80,14 @@ public class FLAChunkProviderHell implements ChunkGenerator {
         this.n = world;
         this.o = flag;
         this.p = new Random(i);
-        this.u = new NoiseGeneratorOctaves(this.worldConfig, this.p, 16);
-        this.v = new NoiseGeneratorOctaves(this.worldConfig, this.p, 16);
-        this.w = new NoiseGeneratorOctaves(this.worldConfig, this.p, 8);
-        this.x = new NoiseGeneratorOctaves(this.worldConfig, this.p, 4);
-        this.y = new NoiseGeneratorOctaves(this.worldConfig, this.p, 4);
-        this.g = new NoiseGeneratorOctaves(this.worldConfig, this.p, 10);
-        this.h = new NoiseGeneratorOctaves(this.worldConfig, this.p, 16);
+        this.u = new NoiseGeneratorOctaves(this.configValues, this.p, 16);
+        this.v = new NoiseGeneratorOctaves(this.configValues, this.p, 16);
+        this.w = new NoiseGeneratorOctaves(this.configValues, this.p, 8);
+        this.x = new NoiseGeneratorOctaves(this.configValues, this.p, 4);
+        this.y = new NoiseGeneratorOctaves(this.configValues, this.p, 4);
+        this.g = new NoiseGeneratorOctaves(this.configValues, this.p, 10);
+        this.h = new NoiseGeneratorOctaves(this.configValues, this.p, 16);
         world.b(63);
-
-        this.paperSpigot = new PaperSpigot(world.worldData.getName(), Bukkit.getName().contains("Paper"));
     }
 
     public void a(int i, int j, ChunkSnapshot chunksnapshot) {
@@ -184,8 +176,8 @@ public class FLAChunkProviderHell implements ChunkGenerator {
                 IBlockData iblockdata1 = FLAChunkProviderHell.b;
 
                 for (int l1 = 127; l1 >= 0; --l1) {
-                    if (l1 < 127 - (this.paperSpigot.generateFlatBedrock ? 0 : this.p.nextInt(5))
-                            && l1 > (this.paperSpigot.generateFlatBedrock ? 0 : this.p.nextInt(5))) {
+                    if (l1 < 127 - (this.configValues.paperSpigot.generateFlatBedrock ? 0 : this.p.nextInt(5))
+                            && l1 > (this.configValues.paperSpigot.generateFlatBedrock ? 0 : this.p.nextInt(5))) {
                         IBlockData iblockdata2 = chunksnapshot.a(i1, l1, l);
 
                         if (iblockdata2.getBlock() != null && iblockdata2.getMaterial() != Material.AIR) {
@@ -404,7 +396,7 @@ public class FLAChunkProviderHell implements ChunkGenerator {
     }
 
     public void recreateStructures(Chunk chunk, int i, int j) {
-        if (this.paperSpigot.generateFortress) {
+        if (this.configValues.paperSpigot.generateFortress) {
             this.H.a(this.n, i, j, (ChunkSnapshot) null);
         }
     }

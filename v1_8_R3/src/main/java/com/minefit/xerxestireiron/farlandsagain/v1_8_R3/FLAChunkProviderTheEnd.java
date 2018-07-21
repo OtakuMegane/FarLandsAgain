@@ -2,8 +2,6 @@ package com.minefit.xerxestireiron.farlandsagain.v1_8_R3;
 
 import java.util.Random;
 
-import org.bukkit.configuration.ConfigurationSection;
-
 import net.minecraft.server.v1_8_R3.BiomeBase;
 import net.minecraft.server.v1_8_R3.BlockPosition;
 import net.minecraft.server.v1_8_R3.Blocks;
@@ -32,18 +30,18 @@ public class FLAChunkProviderTheEnd extends ChunkProviderTheEnd implements IChun
     double[] f;
     double[] g;
 
-    private final ConfigurationSection worldConfig;
+    private final ConfigValues configValues;
 
-    public FLAChunkProviderTheEnd(World world, boolean flag, long i, BlockPosition blockposition, ConfigurationSection worldConfig) {
+    public FLAChunkProviderTheEnd(World world, boolean flag, long i, BlockPosition blockposition, ConfigValues configValues) {
         super(world, i);
-        this.worldConfig = worldConfig;
+        this.configValues = configValues;
         this.l = world;
         this.h = new Random(i);
-        this.i = new NoiseGeneratorOctaves(this.worldConfig, this.h, 16);
-        this.j = new NoiseGeneratorOctaves(this.worldConfig, this.h, 16);
-        this.k = new NoiseGeneratorOctaves(this.worldConfig, this.h, 8);
-        this.a = new NoiseGeneratorOctaves(this.worldConfig, this.h, 10);
-        this.b = new NoiseGeneratorOctaves(this.worldConfig, this.h, 16);
+        this.i = new NoiseGeneratorOctaves(this.configValues, this.h, 16);
+        this.j = new NoiseGeneratorOctaves(this.configValues, this.h, 16);
+        this.k = new NoiseGeneratorOctaves(this.configValues, this.h, 8);
+        this.a = new NoiseGeneratorOctaves(this.configValues, this.h, 10);
+        this.b = new NoiseGeneratorOctaves(this.configValues, this.h, 16);
     }
 
     @Override
