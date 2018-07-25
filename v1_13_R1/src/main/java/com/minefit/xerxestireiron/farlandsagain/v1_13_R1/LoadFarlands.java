@@ -122,7 +122,7 @@ public class LoadFarlands {
         try {
             Field chunkGenerator = this.chunkServer.getClass().getDeclaredField("chunkGenerator");
             chunkGenerator.setAccessible(true);
-            setFinal(chunkGenerator, generator, this.chunkServer);
+            setFinal(chunkGenerator, this.chunkServer, generator);
 
             Field scheduler = this.chunkServer.getClass().getDeclaredField("f");
             scheduler.setAccessible(true);
@@ -130,7 +130,7 @@ public class LoadFarlands {
 
             Field schedulerGenerator = taskScheduler.getClass().getDeclaredField("d");
             schedulerGenerator.setAccessible(true);
-            setFinal(schedulerGenerator, generator, taskScheduler);
+            setFinal(schedulerGenerator, taskScheduler, generator);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
