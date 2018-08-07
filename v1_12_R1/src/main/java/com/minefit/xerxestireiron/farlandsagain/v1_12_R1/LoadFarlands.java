@@ -20,11 +20,11 @@ public class LoadFarlands {
     private final String worldName;
     private String originalGenName;
     private final Messages messages;
+    private ChunkProviderServer chunkServer;
     private ChunkGenerator originalGenerator;
     private final ConfigurationSection worldConfig;
-    private ChunkProviderServer chunkServer;
-    private boolean enabled = false;
     public final ConfigValues configValues;
+    private boolean enabled = false;
 
     public LoadFarlands(World world, ConfigurationSection worldConfig, String pluginName) {
         this.world = world;
@@ -34,7 +34,7 @@ public class LoadFarlands {
         this.messages = new Messages(pluginName);
         this.configValues = new ConfigValues(this.worldName, this.worldConfig);
         this.chunkServer = this.nmsWorld.getChunkProviderServer();
-        this.originalGenerator = this.nmsWorld.getChunkProviderServer().chunkGenerator;
+        this.originalGenerator = this.chunkServer.chunkGenerator;
         this.originalGenName = this.originalGenerator.getClass().getSimpleName();
         overrideGenerator();
     }
@@ -106,7 +106,7 @@ public class LoadFarlands {
         try {
             Field chunkGenerator = this.chunkServer.getClass().getDeclaredField("chunkGenerator");
             chunkGenerator.setAccessible(true);
-            setFinal(chunkGenerator, generator, this.chunkServer);
+            setFinal(chunkGenerator, this.chunkServer, generator);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
