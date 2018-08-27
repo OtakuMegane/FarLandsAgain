@@ -25,6 +25,7 @@ public class LoadFarlands {
     private final ConfigurationSection worldConfig;
     public final ConfigValues configValues;
     private boolean enabled = false;
+    private String worldType;
 
     public LoadFarlands(World world, ConfigurationSection worldConfig, String pluginName) {
         this.world = world;
@@ -36,6 +37,7 @@ public class LoadFarlands {
         this.chunkServer = this.nmsWorld.getChunkProviderServer();
         this.originalGenerator = this.chunkServer.chunkGenerator;
         this.originalGenName = this.originalGenerator.getClass().getSimpleName();
+        this.worldType = this.nmsWorld.N().name();
         overrideGenerator();
     }
 
@@ -67,9 +69,11 @@ public class LoadFarlands {
         }
 
         if (environment == Environment.NORMAL) {
-            FLAChunkProviderGenerate generator = new FLAChunkProviderGenerate(this.nmsWorld, worldSeed, genFeatures,
-                    genOptions, this.configValues);
-            this.enabled = setGenerator(generator);
+            if (this.worldType.equals("default")) {
+                FLAChunkProviderGenerate generator = new FLAChunkProviderGenerate(this.nmsWorld, worldSeed, genFeatures,
+                        genOptions, this.configValues);
+                this.enabled = setGenerator(generator);
+            }
         } else if (environment == Environment.NETHER) {
             FLAChunkProviderHell generator = new FLAChunkProviderHell(this.nmsWorld, genFeatures, worldSeed,
                     this.configValues);
