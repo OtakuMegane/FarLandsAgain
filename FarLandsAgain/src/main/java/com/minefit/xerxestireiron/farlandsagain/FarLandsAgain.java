@@ -19,7 +19,7 @@ public class FarLandsAgain extends JavaPlugin implements Listener {
     protected final Messages messages = new Messages(this.getName());
     private HashMap<String, ManageFarLands> manageWorlds;
     private final ServerVersion serverVersion = new ServerVersion(this);
-    private final List<String> compatibleVersions = Arrays.asList("v1_12_R1", "v1_13_R1", "v1_13_R2");
+    private final List<String> compatibleVersions = Arrays.asList("v1_12_R1", "v1_14_R1");
 
     @Override
     public void onEnable() {

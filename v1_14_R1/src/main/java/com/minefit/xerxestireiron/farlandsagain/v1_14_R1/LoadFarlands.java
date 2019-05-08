@@ -1,26 +1,23 @@
-package com.minefit.xerxestireiron.farlandsagain.v1_13_R1;
+package com.minefit.xerxestireiron.farlandsagain.v1_14_R1;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 
 import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.craftbukkit.v1_13_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
 
 import com.minefit.xerxestireiron.farlandsagain.Messages;
 
-import net.minecraft.server.v1_13_R1.ChunkProviderServer;
-import net.minecraft.server.v1_13_R1.BiomeLayout;
-import net.minecraft.server.v1_13_R1.Biomes;
-import net.minecraft.server.v1_13_R1.Blocks;
-import net.minecraft.server.v1_13_R1.ChunkGenerator;
-import net.minecraft.server.v1_13_R1.ChunkGeneratorType;
-import net.minecraft.server.v1_13_R1.ChunkTaskScheduler;
-import net.minecraft.server.v1_13_R1.GeneratorSettingsEnd;
-import net.minecraft.server.v1_13_R1.GeneratorSettingsNether;
-import net.minecraft.server.v1_13_R1.GeneratorSettingsOverworld;
-import net.minecraft.server.v1_13_R1.WorldServer;
+import net.minecraft.server.v1_14_R1.ChunkProviderServer;
+import net.minecraft.server.v1_14_R1.BiomeLayout;
+import net.minecraft.server.v1_14_R1.Biomes;
+import net.minecraft.server.v1_14_R1.Blocks;
+import net.minecraft.server.v1_14_R1.ChunkGenerator;
+import net.minecraft.server.v1_14_R1.GeneratorSettingsEnd;
+import net.minecraft.server.v1_14_R1.GeneratorSettingsNether;
+import net.minecraft.server.v1_14_R1.GeneratorSettingsOverworld;
+import net.minecraft.server.v1_14_R1.WorldServer;
 
 public class LoadFarlands {
     private final World world;
@@ -33,6 +30,7 @@ public class LoadFarlands {
     private ChunkProviderServer chunkServer;
     private boolean enabled = false;
     public final ConfigValues configValues;
+    private String worldType;
 
     public LoadFarlands(World world, ConfigurationSection worldConfig, String pluginName) {
         this.world = world;
@@ -41,9 +39,10 @@ public class LoadFarlands {
         this.nmsWorld = ((CraftWorld) world).getHandle();
         this.messages = new Messages(pluginName);
         this.configValues = new ConfigValues(this.worldName, this.worldConfig);
-        this.chunkServer = this.nmsWorld.getChunkProviderServer();
-        this.originalGenerator = this.nmsWorld.getChunkProviderServer().chunkGenerator;
+        this.chunkServer = (ChunkProviderServer) this.nmsWorld.getChunkProvider();
+        this.originalGenerator = this.chunkServer.getChunkGenerator();
         this.originalGenName = this.originalGenerator.getClass().getSimpleName();
+        this.worldType = this.nmsWorld.P().name();
         overrideGenerator();
     }
 
@@ -72,26 +71,30 @@ public class LoadFarlands {
         }
 
         if (environment == Environment.NORMAL) {
-            GeneratorSettingsOverworld generatorsettingsoverworld = new GeneratorSettingsOverworld();
-            FLAChunkProviderGenerate generator = new FLAChunkProviderGenerate(this.nmsWorld,
-                    BiomeLayout.d
-                            .a(BiomeLayout.d.a().a(new GeneratorSettingsOverworld()).a(this.nmsWorld.getWorldData())),
-                    generatorsettingsoverworld, this.configValues);
-            this.enabled = setGenerator(generator);
+            FLAChunkProviderGenerate generator = null;
+
+            if (this.worldType.equals("default")) {
+                GeneratorSettingsOverworld generatorsettingsoverworld = new GeneratorSettingsOverworld();
+                generator = new FLAChunkProviderGenerate(this.nmsWorld,
+                        BiomeLayout.c
+                                .a(BiomeLayout.c.a().a(generatorsettingsoverworld).a(this.nmsWorld.getWorldData())),
+                        generatorsettingsoverworld, this.configValues);
+                this.enabled = setGenerator(generator);
+            }
         } else if (environment == Environment.NETHER) {
             GeneratorSettingsNether generatorsettingsnether = new GeneratorSettingsNether();
             generatorsettingsnether.a(Blocks.NETHERRACK.getBlockData());
             generatorsettingsnether.b(Blocks.LAVA.getBlockData());
             FLAChunkProviderHell generator = new FLAChunkProviderHell(this.nmsWorld,
-                    BiomeLayout.c.a(BiomeLayout.c.a().a(Biomes.j)), generatorsettingsnether, this.configValues);
+                    BiomeLayout.b.a(BiomeLayout.b.a().a(Biomes.NETHER)), generatorsettingsnether, this.configValues);
             this.enabled = setGenerator(generator);
         } else if (environment == Environment.THE_END) {
-            GeneratorSettingsEnd generatorsettingsend = (GeneratorSettingsEnd) ChunkGeneratorType.d.a();
+            GeneratorSettingsEnd generatorsettingsend = new GeneratorSettingsEnd();
             generatorsettingsend.a(Blocks.END_STONE.getBlockData());
             generatorsettingsend.b(Blocks.AIR.getBlockData());
             generatorsettingsend.a(this.nmsWorld.worldProvider.d());
             FLAChunkProviderTheEnd generator = new FLAChunkProviderTheEnd(this.nmsWorld,
-                    BiomeLayout.e.a(BiomeLayout.e.a().a(this.nmsWorld.getSeed())), generatorsettingsend,
+                    BiomeLayout.d.a(BiomeLayout.d.a().a(this.nmsWorld.getSeed())), generatorsettingsend,
                     this.configValues);
             this.enabled = setGenerator(generator);
         } else {
@@ -108,11 +111,11 @@ public class LoadFarlands {
 
     private boolean isRecognizedGenerator(Environment environment, String originalGenName) {
         if (environment == Environment.NORMAL) {
-            return originalGenName.equals("NormalChunkGenerator") || originalGenName.equals("TimedChunkGenerator");
+            return originalGenName.equals("ChunkProviderGenerate") || originalGenName.equals("TimedChunkGenerator");
         } else if (environment == Environment.NETHER) {
-            return originalGenName.equals("NetherChunkGenerator") || originalGenName.equals("TimedChunkGenerator");
+            return originalGenName.equals("ChunkProviderHell") || originalGenName.equals("TimedChunkGenerator");
         } else if (environment == Environment.THE_END) {
-            return originalGenName.equals("SkyLandsChunkGenerator") || originalGenName.equals("TimedChunkGenerator");
+            return originalGenName.equals("ChunkProviderTheEnd") || originalGenName.equals("TimedChunkGenerator");
         }
 
         return false;
@@ -120,30 +123,18 @@ public class LoadFarlands {
 
     private boolean setGenerator(ChunkGenerator<?> generator) {
         try {
-            Field chunkGenerator = this.chunkServer.getClass().getDeclaredField("chunkGenerator");
+            Field chunkGenerator = ReflectionHelper.getField(this.chunkServer.getClass(), "chunkGenerator", true);
             chunkGenerator.setAccessible(true);
-            setFinal(chunkGenerator, this.chunkServer, generator);
+            ReflectionHelper.setFinal(chunkGenerator, this.chunkServer, generator);
 
-            Field scheduler = this.chunkServer.getClass().getDeclaredField("f");
-            scheduler.setAccessible(true);
-            ChunkTaskScheduler taskScheduler = (ChunkTaskScheduler) scheduler.get(this.chunkServer);
-
-            Field schedulerGenerator = taskScheduler.getClass().getDeclaredField("d");
-            schedulerGenerator.setAccessible(true);
-            setFinal(schedulerGenerator, taskScheduler, generator);
+            Field chunkMapGenerator = ReflectionHelper.getField(this.chunkServer.playerChunkMap.getClass(), "chunkGenerator", true);
+            chunkMapGenerator.setAccessible(true);
+            ReflectionHelper.setFinal(chunkMapGenerator, this.chunkServer.playerChunkMap, generator);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
 
         return true;
-    }
-
-    private void setFinal(Field field, Object instance, Object obj) throws Exception {
-        field.setAccessible(true);
-        Field modifiers = Field.class.getDeclaredField("modifiers");
-        modifiers.setAccessible(true);
-        modifiers.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-        field.set(instance, obj);
     }
 }

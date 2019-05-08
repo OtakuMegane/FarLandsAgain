@@ -7,7 +7,7 @@
 		<version>1.0</version>
 	</parent>
 	<artifactId>farlandsagain</artifactId>
-	<version>v2.0</version>
+	<version>v2.1</version>
 	<name>FarLandsAgain</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -35,13 +35,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.minefit.xerxestireiron.farlandsagain</groupId>
-			<artifactId>v1_13_R1</artifactId>
-			<version>1.0</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.minefit.xerxestireiron.farlandsagain</groupId>
-			<artifactId>v1_13_R2</artifactId>
+			<artifactId>v1_14_R1</artifactId>
 			<version>1.0</version>
 			<scope>compile</scope>
 		</dependency>
