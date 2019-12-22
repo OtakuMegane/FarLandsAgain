@@ -54,4 +54,9 @@ public class Messages {
     public void restoreFailed(String worldName) {
         this.logger.info("[" + this.pluginName + " Error] Something went wrong while restoring the original world generation.");
     }
+
+    public void providerFlat(String worldName) {
+        this.logger.info("[" + this.pluginName + " Error] Flatlands generator detected for '" + worldName + "'.");
+        this.logger.info("[" + this.pluginName + " Error] Far Lands do not generate in flat worlds.");
+    }
 }

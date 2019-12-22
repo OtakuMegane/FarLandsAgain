@@ -61,6 +61,9 @@ public class LoadFarlands {
                 || originalGenName.equals("FLAChunkProviderTheEnd")) {
             this.messages.alreadyEnabled(this.worldName);
             return;
+        } else if (originalGenName.equals("ChunkProviderFlat")) {
+            this.messages.providerFlat(this.worldName);
+            return;
         }
 
         if (!isRecognizedGenerator(environment, this.originalGenName)) {

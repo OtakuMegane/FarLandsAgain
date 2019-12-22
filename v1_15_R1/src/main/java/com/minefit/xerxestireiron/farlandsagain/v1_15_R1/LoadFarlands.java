@@ -63,6 +63,9 @@ public class LoadFarlands {
                 || originalGenName.equals("FLAChunkProviderTheEnd")) {
             this.messages.alreadyEnabled(this.worldName);
             return;
+        } else if (originalGenName.equals("ChunkProviderFlat")) {
+            this.messages.providerFlat(this.worldName);
+            return;
         }
 
         if (!isRecognizedGenerator(environment, this.originalGenName)) {
@@ -76,8 +79,7 @@ public class LoadFarlands {
             if (this.worldType.equals("default")) {
                 GeneratorSettingsOverworld generatorsettingsoverworld = new GeneratorSettingsOverworld();
                 generator = new FLAChunkProviderGenerate(this.nmsWorld,
-                        BiomeLayout.c
-                                .a(BiomeLayout.c.a(this.nmsWorld.getWorldData()).a(generatorsettingsoverworld)),
+                        BiomeLayout.c.a(BiomeLayout.c.a(this.nmsWorld.getWorldData()).a(generatorsettingsoverworld)),
                         generatorsettingsoverworld, this.configValues);
                 this.enabled = setGenerator(generator);
             }
@@ -86,7 +88,8 @@ public class LoadFarlands {
             generatorsettingsnether.a(Blocks.NETHERRACK.getBlockData());
             generatorsettingsnether.b(Blocks.LAVA.getBlockData());
             FLAChunkProviderHell generator = new FLAChunkProviderHell(this.nmsWorld,
-                    BiomeLayout.b.a(BiomeLayout.b.a(this.nmsWorld.getWorldData()).a(Biomes.NETHER)), generatorsettingsnether, this.configValues);
+                    BiomeLayout.b.a(BiomeLayout.b.a(this.nmsWorld.getWorldData()).a(Biomes.NETHER)),
+                    generatorsettingsnether, this.configValues);
             this.enabled = setGenerator(generator);
         } else if (environment == Environment.THE_END) {
             GeneratorSettingsEnd generatorsettingsend = new GeneratorSettingsEnd();
@@ -127,7 +130,8 @@ public class LoadFarlands {
             chunkGenerator.setAccessible(true);
             ReflectionHelper.setFinal(chunkGenerator, this.chunkServer, generator);
 
-            Field chunkMapGenerator = ReflectionHelper.getField(this.chunkServer.playerChunkMap.getClass(), "chunkGenerator", true);
+            Field chunkMapGenerator = ReflectionHelper.getField(this.chunkServer.playerChunkMap.getClass(),
+                    "chunkGenerator", true);
             chunkMapGenerator.setAccessible(true);
             ReflectionHelper.setFinal(chunkMapGenerator, this.chunkServer.playerChunkMap, generator);
         } catch (Exception e) {

@@ -63,6 +63,9 @@ public class LoadFarlands {
                 || originalGenName.equals("FLAChunkProviderTheEnd")) {
             this.messages.alreadyEnabled(this.worldName);
             return;
+        } else if (originalGenName.equals("ChunkProviderFlat")) {
+            this.messages.providerFlat(this.worldName);
+            return;
         }
 
         if (!isRecognizedGenerator(environment, this.originalGenName)) {
@@ -127,7 +130,8 @@ public class LoadFarlands {
             chunkGenerator.setAccessible(true);
             ReflectionHelper.setFinal(chunkGenerator, this.chunkServer, generator);
 
-            Field chunkMapGenerator = ReflectionHelper.getField(this.chunkServer.playerChunkMap.getClass(), "chunkGenerator", true);
+            Field chunkMapGenerator = ReflectionHelper.getField(this.chunkServer.playerChunkMap.getClass(),
+                    "chunkGenerator", true);
             chunkMapGenerator.setAccessible(true);
             ReflectionHelper.setFinal(chunkMapGenerator, this.chunkServer.playerChunkMap, generator);
         } catch (Exception e) {

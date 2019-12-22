@@ -24,7 +24,7 @@
 		<dependency>
 			<groupId>com.minefit.xerxestireiron.farlandsagain</groupId>
 			<artifactId>messages</artifactId>
-			<version>1.1</version>
+			<version>1.2</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
