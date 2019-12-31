@@ -10,6 +10,7 @@ import org.bukkit.craftbukkit.v1_15_R1.CraftWorld;
 import com.minefit.xerxestireiron.farlandsagain.Messages;
 
 import net.minecraft.server.v1_15_R1.ChunkProviderServer;
+import net.minecraft.server.v1_15_R1.BiomeBase;
 import net.minecraft.server.v1_15_R1.BiomeLayout;
 import net.minecraft.server.v1_15_R1.Biomes;
 import net.minecraft.server.v1_15_R1.Blocks;
@@ -17,6 +18,8 @@ import net.minecraft.server.v1_15_R1.ChunkGenerator;
 import net.minecraft.server.v1_15_R1.GeneratorSettingsEnd;
 import net.minecraft.server.v1_15_R1.GeneratorSettingsNether;
 import net.minecraft.server.v1_15_R1.GeneratorSettingsOverworld;
+import net.minecraft.server.v1_15_R1.IRegistry;
+import net.minecraft.server.v1_15_R1.MinecraftKey;
 import net.minecraft.server.v1_15_R1.WorldServer;
 
 public class LoadFarlands {
@@ -59,27 +62,36 @@ public class LoadFarlands {
     public void overrideGenerator() {
         Environment environment = this.world.getEnvironment();
 
-        if (originalGenName.equals("FLAChunkProviderGenerate") || originalGenName.equals("FLAChunkProviderHell")
-                || originalGenName.equals("FLAChunkProviderTheEnd")) {
+        if (this.originalGenName.equals("FLAChunkProviderGenerate") || this.originalGenName.equals("FLAChunkProviderHell")
+                || this.originalGenName.equals("FLAChunkProviderTheEnd")) {
             this.messages.alreadyEnabled(this.worldName);
             return;
-        } else if (originalGenName.equals("ChunkProviderFlat")) {
+        } else if (this.originalGenName.equals("ChunkProviderFlat")) {
             this.messages.providerFlat(this.worldName);
             return;
         }
 
         if (!isRecognizedGenerator(environment, this.originalGenName)) {
-            this.messages.unknownGenerator(this.worldName, originalGenName);
+            this.messages.unknownGenerator(this.worldName, this.originalGenName);
             return;
         }
 
         if (environment == Environment.NORMAL) {
             FLAChunkProviderGenerate generator = null;
 
-            if (this.worldType.equals("default")) {
+            if (this.worldType.equals("default") || this.worldType.equals("largebiomes") || this.worldType.equals("amplified")) {
                 GeneratorSettingsOverworld generatorsettingsoverworld = new GeneratorSettingsOverworld();
                 generator = new FLAChunkProviderGenerate(this.nmsWorld,
                         BiomeLayout.c.a(BiomeLayout.c.a(this.nmsWorld.getWorldData()).a(generatorsettingsoverworld)),
+                        generatorsettingsoverworld, this.configValues);
+                this.enabled = setGenerator(generator);
+            }
+            else if (this.worldType.equals("buffet")) {
+                MinecraftKey biomeKey = new MinecraftKey(this.world.getEmptyChunkSnapshot(0, 0, true, true).getBiome(0, 0, 0).getKey().getKey());
+                BiomeBase[] biomeBase = new BiomeBase[]{IRegistry.BIOME.get(biomeKey)};
+                GeneratorSettingsOverworld generatorsettingsoverworld = new GeneratorSettingsOverworld();
+                generator = new FLAChunkProviderGenerate(this.nmsWorld,
+                        BiomeLayout.a.a(BiomeLayout.a.a(this.nmsWorld.getWorldData()).a(biomeBase).a(biomeBase.length)),
                         generatorsettingsoverworld, this.configValues);
                 this.enabled = setGenerator(generator);
             }

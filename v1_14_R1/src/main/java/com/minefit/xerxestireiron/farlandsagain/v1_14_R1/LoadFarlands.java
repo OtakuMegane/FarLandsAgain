@@ -8,6 +8,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
 
 import com.minefit.xerxestireiron.farlandsagain.Messages;
+import com.minefit.xerxestireiron.farlandsagain.v1_14_R1.FLAChunkProviderGenerate;
 
 import net.minecraft.server.v1_14_R1.ChunkProviderServer;
 import net.minecraft.server.v1_14_R1.BiomeLayout;
@@ -18,6 +19,9 @@ import net.minecraft.server.v1_14_R1.GeneratorSettingsEnd;
 import net.minecraft.server.v1_14_R1.GeneratorSettingsNether;
 import net.minecraft.server.v1_14_R1.GeneratorSettingsOverworld;
 import net.minecraft.server.v1_14_R1.WorldServer;
+import net.minecraft.server.v1_14_R1.BiomeBase;
+import net.minecraft.server.v1_14_R1.IRegistry;
+import net.minecraft.server.v1_14_R1.MinecraftKey;
 
 public class LoadFarlands {
     private final World world;
@@ -81,6 +85,15 @@ public class LoadFarlands {
                 generator = new FLAChunkProviderGenerate(this.nmsWorld,
                         BiomeLayout.c
                                 .a(BiomeLayout.c.a().a(generatorsettingsoverworld).a(this.nmsWorld.getWorldData())),
+                        generatorsettingsoverworld, this.configValues);
+                this.enabled = setGenerator(generator);
+            }
+            else if (this.worldType.equals("buffet")) {
+                MinecraftKey biomeKey = new MinecraftKey(this.world.getEmptyChunkSnapshot(0, 0, true, true).getBiome(0, 0).getKey().getKey());
+                BiomeBase[] biomeBase = new BiomeBase[]{IRegistry.BIOME.get(biomeKey)};
+                GeneratorSettingsOverworld generatorsettingsoverworld = new GeneratorSettingsOverworld();
+                generator = new FLAChunkProviderGenerate(this.nmsWorld,
+                        BiomeLayout.a.a(BiomeLayout.a.a().a(biomeBase).a(biomeBase.length)),
                         generatorsettingsoverworld, this.configValues);
                 this.enabled = setGenerator(generator);
             }
