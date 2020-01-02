@@ -83,7 +83,7 @@ public class LoadFarlands {
                 GeneratorSettingsOverworld generatorsettingsoverworld = new GeneratorSettingsOverworld();
                 generator = new FLAChunkProviderGenerate(this.nmsWorld,
                         BiomeLayout.c.a(BiomeLayout.c.a(this.nmsWorld.getWorldData()).a(generatorsettingsoverworld)),
-                        generatorsettingsoverworld, this.configValues);
+                        generatorsettingsoverworld, this.configValues, this.originalGenerator);
                 this.enabled = setGenerator(generator);
             }
             else if (this.worldType.equals("buffet")) {
@@ -92,7 +92,7 @@ public class LoadFarlands {
                 GeneratorSettingsOverworld generatorsettingsoverworld = new GeneratorSettingsOverworld();
                 generator = new FLAChunkProviderGenerate(this.nmsWorld,
                         BiomeLayout.a.a(BiomeLayout.a.a(this.nmsWorld.getWorldData()).a(biomeBase).a(biomeBase.length)),
-                        generatorsettingsoverworld, this.configValues);
+                        generatorsettingsoverworld, this.configValues, this.originalGenerator);
                 this.enabled = setGenerator(generator);
             }
         } else if (environment == Environment.NETHER) {
@@ -101,7 +101,7 @@ public class LoadFarlands {
             generatorsettingsnether.b(Blocks.LAVA.getBlockData());
             FLAChunkProviderHell generator = new FLAChunkProviderHell(this.nmsWorld,
                     BiomeLayout.b.a(BiomeLayout.b.a(this.nmsWorld.getWorldData()).a(Biomes.NETHER)),
-                    generatorsettingsnether, this.configValues);
+                    generatorsettingsnether, this.configValues, this.originalGenerator);
             this.enabled = setGenerator(generator);
         } else if (environment == Environment.THE_END) {
             GeneratorSettingsEnd generatorsettingsend = new GeneratorSettingsEnd();
@@ -110,7 +110,7 @@ public class LoadFarlands {
             generatorsettingsend.a(this.nmsWorld.worldProvider.c());
             FLAChunkProviderTheEnd generator = new FLAChunkProviderTheEnd(this.nmsWorld,
                     BiomeLayout.d.a(BiomeLayout.d.a(this.nmsWorld.getWorldData())), generatorsettingsend,
-                    this.configValues);
+                    this.configValues, this.originalGenerator);
             this.enabled = setGenerator(generator);
         } else {
             this.enabled = false;

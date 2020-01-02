@@ -1,11 +1,14 @@
 package com.minefit.xerxestireiron.farlandsagain.v1_14_R1;
 
+import java.lang.reflect.Field;
+
 import net.minecraft.server.v1_14_R1.ChunkProviderHell;
 import net.minecraft.server.v1_14_R1.GeneratorSettingsNether;
 import net.minecraft.server.v1_14_R1.MathHelper;
 import net.minecraft.server.v1_14_R1.NoiseGeneratorOctaves;
 import net.minecraft.server.v1_14_R1.World;
 import net.minecraft.server.v1_14_R1.WorldChunkManager;
+import net.minecraft.server.v1_14_R1.ChunkGenerator;
 
 public class FLAChunkProviderHell extends ChunkProviderHell {
 
@@ -14,20 +17,31 @@ public class FLAChunkProviderHell extends ChunkProviderHell {
     private final int lowZ;
     private final int highX;
     private final int highZ;
-    private final NoiseGeneratorOctaves o;
-    private final NoiseGeneratorOctaves p;
-    private final NoiseGeneratorOctaves q;
+    private NoiseGeneratorOctaves o;
+    private NoiseGeneratorOctaves p;
+    private NoiseGeneratorOctaves q;
 
-    public FLAChunkProviderHell(World world, WorldChunkManager worldchunkmanager, GeneratorSettingsNether generatorsettingsnether, ConfigValues configValues) {
+    public FLAChunkProviderHell(World world, WorldChunkManager worldchunkmanager, GeneratorSettingsNether generatorsettingsnether, ConfigValues configValues, ChunkGenerator<?> originalGenerator) {
         super(world, worldchunkmanager, generatorsettingsnether);
         this.configValues = configValues;
         this.lowX = this.configValues.farLandsLowX / 4;
         this.lowZ = this.configValues.farLandsLowZ / 4;
         this.highX = this.configValues.farLandsHighX / 4;
         this.highZ = this.configValues.farLandsHighZ / 4;
-        this.o = new NoiseGeneratorOctaves(this.e, 16);
-        this.p = new NoiseGeneratorOctaves(this.e, 16);
-        this.q = new NoiseGeneratorOctaves(this.e, 8);
+
+        try {
+            Field o = ReflectionHelper.getField(originalGenerator.getClass(), "o", true);
+            o.setAccessible(true);
+            this.o = (NoiseGeneratorOctaves) o.get(originalGenerator);
+            Field p = ReflectionHelper.getField(originalGenerator.getClass(), "p", true);
+            p.setAccessible(true);
+            this.p = (NoiseGeneratorOctaves) p.get(originalGenerator);
+            Field q = ReflectionHelper.getField(originalGenerator.getClass(), "q", true);
+            q.setAccessible(true);
+            this.q = (NoiseGeneratorOctaves) q.get(originalGenerator);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // Used for Far Lands

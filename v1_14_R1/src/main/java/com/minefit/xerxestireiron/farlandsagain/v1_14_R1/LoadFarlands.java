@@ -85,16 +85,16 @@ public class LoadFarlands {
                 generator = new FLAChunkProviderGenerate(this.nmsWorld,
                         BiomeLayout.c
                                 .a(BiomeLayout.c.a().a(generatorsettingsoverworld).a(this.nmsWorld.getWorldData())),
-                        generatorsettingsoverworld, this.configValues);
+                        generatorsettingsoverworld, this.configValues, this.originalGenerator);
                 this.enabled = setGenerator(generator);
-            }
-            else if (this.worldType.equals("buffet")) {
-                MinecraftKey biomeKey = new MinecraftKey(this.world.getEmptyChunkSnapshot(0, 0, true, true).getBiome(0, 0).getKey().getKey());
-                BiomeBase[] biomeBase = new BiomeBase[]{IRegistry.BIOME.get(biomeKey)};
+            } else if (this.worldType.equals("buffet")) {
+                MinecraftKey biomeKey = new MinecraftKey(
+                        this.world.getEmptyChunkSnapshot(0, 0, true, true).getBiome(0, 0).getKey().getKey());
+                BiomeBase[] biomeBase = new BiomeBase[] { IRegistry.BIOME.get(biomeKey) };
                 GeneratorSettingsOverworld generatorsettingsoverworld = new GeneratorSettingsOverworld();
                 generator = new FLAChunkProviderGenerate(this.nmsWorld,
-                        BiomeLayout.a.a(BiomeLayout.a.a().a(biomeBase).a(biomeBase.length)),
-                        generatorsettingsoverworld, this.configValues);
+                        BiomeLayout.a.a(BiomeLayout.a.a().a(biomeBase).a(biomeBase.length)), generatorsettingsoverworld,
+                        this.configValues, this.originalGenerator);
                 this.enabled = setGenerator(generator);
             }
         } else if (environment == Environment.NETHER) {
@@ -102,7 +102,8 @@ public class LoadFarlands {
             generatorsettingsnether.a(Blocks.NETHERRACK.getBlockData());
             generatorsettingsnether.b(Blocks.LAVA.getBlockData());
             FLAChunkProviderHell generator = new FLAChunkProviderHell(this.nmsWorld,
-                    BiomeLayout.b.a(BiomeLayout.b.a().a(Biomes.NETHER)), generatorsettingsnether, this.configValues);
+                    BiomeLayout.b.a(BiomeLayout.b.a().a(Biomes.NETHER)), generatorsettingsnether, this.configValues,
+                    this.originalGenerator);
             this.enabled = setGenerator(generator);
         } else if (environment == Environment.THE_END) {
             GeneratorSettingsEnd generatorsettingsend = new GeneratorSettingsEnd();
@@ -111,7 +112,7 @@ public class LoadFarlands {
             generatorsettingsend.a(this.nmsWorld.worldProvider.d());
             FLAChunkProviderTheEnd generator = new FLAChunkProviderTheEnd(this.nmsWorld,
                     BiomeLayout.d.a(BiomeLayout.d.a().a(this.nmsWorld.getSeed())), generatorsettingsend,
-                    this.configValues);
+                    this.configValues, this.originalGenerator);
             this.enabled = setGenerator(generator);
         } else {
             this.enabled = false;

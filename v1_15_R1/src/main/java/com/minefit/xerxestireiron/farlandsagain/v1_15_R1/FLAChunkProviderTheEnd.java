@@ -1,5 +1,8 @@
 package com.minefit.xerxestireiron.farlandsagain.v1_15_R1;
 
+import java.lang.reflect.Field;
+
+import net.minecraft.server.v1_15_R1.ChunkGenerator;
 import net.minecraft.server.v1_15_R1.ChunkProviderTheEnd;
 import net.minecraft.server.v1_15_R1.GeneratorAccess;
 import net.minecraft.server.v1_15_R1.GeneratorSettingsEnd;
@@ -14,20 +17,31 @@ public class FLAChunkProviderTheEnd extends ChunkProviderTheEnd {
     private final int lowZ;
     private final int highX;
     private final int highZ;
-    private final NoiseGeneratorOctaves o;
-    private final NoiseGeneratorOctaves p;
-    private final NoiseGeneratorOctaves q;
+    private NoiseGeneratorOctaves o;
+    private NoiseGeneratorOctaves p;
+    private NoiseGeneratorOctaves q;
 
-    public FLAChunkProviderTheEnd(GeneratorAccess generatoraccess, WorldChunkManager worldchunkmanager, GeneratorSettingsEnd generatorsettingsend, ConfigValues configValues) {
+    public FLAChunkProviderTheEnd(GeneratorAccess generatoraccess, WorldChunkManager worldchunkmanager, GeneratorSettingsEnd generatorsettingsend, ConfigValues configValues, ChunkGenerator<?> originalGenerator) {
         super(generatoraccess, worldchunkmanager, generatorsettingsend);
         this.configValues = configValues;
         this.lowX = this.configValues.farLandsLowX / 8;
         this.lowZ = this.configValues.farLandsLowZ / 8;
         this.highX = this.configValues.farLandsHighX / 8;
         this.highZ = this.configValues.farLandsHighZ / 8;
-        this.o = new NoiseGeneratorOctaves(this.e, 15, 0);
-        this.p = new NoiseGeneratorOctaves(this.e, 15, 0);
-        this.q = new NoiseGeneratorOctaves(this.e, 7, 0);
+
+        try {
+            Field o = ReflectionHelper.getField(originalGenerator.getClass(), "o", true);
+            o.setAccessible(true);
+            this.o = (NoiseGeneratorOctaves) o.get(originalGenerator);
+            Field p = ReflectionHelper.getField(originalGenerator.getClass(), "p", true);
+            p.setAccessible(true);
+            this.p = (NoiseGeneratorOctaves) p.get(originalGenerator);
+            Field q = ReflectionHelper.getField(originalGenerator.getClass(), "q", true);
+            q.setAccessible(true);
+            this.q = (NoiseGeneratorOctaves) q.get(originalGenerator);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
