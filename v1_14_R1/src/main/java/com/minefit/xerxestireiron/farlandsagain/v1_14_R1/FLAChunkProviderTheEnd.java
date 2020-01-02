@@ -29,6 +29,8 @@ public class FLAChunkProviderTheEnd extends ChunkProviderTheEnd {
         this.highX = this.configValues.farLandsHighX / 8;
         this.highZ = this.configValues.farLandsHighZ / 8;
 
+        // It's crucial to get the random generators at their current state
+        // Otherwise it derps up the regular generation
         try {
             Field o = ReflectionHelper.getField(originalGenerator.getClass(), "o", true);
             o.setAccessible(true);

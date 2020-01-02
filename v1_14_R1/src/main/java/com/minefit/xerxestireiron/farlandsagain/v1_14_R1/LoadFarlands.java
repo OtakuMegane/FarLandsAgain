@@ -77,6 +77,8 @@ public class LoadFarlands {
             return;
         }
 
+        //NOTE: Flat map type does not use noise generators for terrain so Far Lands can't be done there
+        // The equivalent would just be a solid block anyway
         if (environment == Environment.NORMAL) {
             FLAChunkProviderGenerate generator = null;
 
