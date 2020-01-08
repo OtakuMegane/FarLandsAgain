@@ -81,7 +81,7 @@ public class LoadFarlands {
         if (environment == Environment.NORMAL) {
             FLAChunkProviderGenerate generator = null;
 
-            if (this.worldType.equals("default") || this.worldType.equals("largebiomes") || this.worldType.equals("amplified")) {
+            if (this.worldType.equals("default") || this.worldType.equals("largeBiomes") || this.worldType.equals("amplified")) {
                 GeneratorSettingsOverworld generatorsettingsoverworld = new GeneratorSettingsOverworld();
                 generator = new FLAChunkProviderGenerate(this.nmsWorld,
                         BiomeLayout.c.a(BiomeLayout.c.a(this.nmsWorld.getWorldData()).a(generatorsettingsoverworld)),
