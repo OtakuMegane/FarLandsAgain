@@ -69,26 +69,22 @@ public class LoadFarlands {
             return;
         } else {
             WorldChunkManager chunkManager = this.chunkServer.chunkGenerator.getWorldChunkManager();
-            ChunkGenerator chunkGen = this.chunkServer.chunkGenerator;
 
             try {
-                Field wField = ReflectionHelper.getField(chunkGen.getClass(), "w", true);
-                wField.setAccessible(true);
-                long i = wField.getLong(chunkGen);
-                Field hField = ReflectionHelper.getField(chunkGen.getClass(), "h", true);
+                Field hField = ReflectionHelper.getField(this.originalGenerator.getClass(), "h", true);
                 hField.setAccessible(true);
                 GeneratorSettingBase h;
-                h = (GeneratorSettingBase) hField.get(chunkGen);
+                h = (GeneratorSettingBase) hField.get(this.originalGenerator);
 
                 // They've done it again with the fastutil stuff
                 // Paper and Spigot, get your shit together and match
                 // I don't care who
                 if (this.isPaper) {
-                    enabled = setGenerator(new FLA_ChunkGeneratorAbstract_Paper(chunkManager, i, h, this.configValues,
-                            this.originalGenerator));
+                    enabled = setGenerator(new FLA_ChunkGeneratorAbstract_Paper(chunkManager, this.nmsWorld.getSeed(),
+                            h, this.configValues, this.originalGenerator));
                 } else {
-                    enabled = setGenerator(new FLA_ChunkGeneratorAbstract(chunkManager, i, h, this.configValues,
-                            this.originalGenerator));
+                    enabled = setGenerator(new FLA_ChunkGeneratorAbstract(chunkManager, this.nmsWorld.getSeed(), h,
+                            this.configValues, this.originalGenerator));
                 }
 
             } catch (Exception e) {
