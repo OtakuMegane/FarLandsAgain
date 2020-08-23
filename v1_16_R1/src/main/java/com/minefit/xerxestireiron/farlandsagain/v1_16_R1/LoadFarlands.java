@@ -68,6 +68,8 @@ public class LoadFarlands {
             this.messages.unknownGenerator(this.worldName, this.originalGenName);
             return;
         } else {
+            // The End needs a divisor of 8 for whatever reason
+            int divisor = (environment == Environment.THE_END) ? 8 : 4;
             WorldChunkManager chunkManager = this.chunkServer.chunkGenerator.getWorldChunkManager();
 
             try {
@@ -81,10 +83,10 @@ public class LoadFarlands {
                 // I don't care who
                 if (this.isPaper) {
                     enabled = setGenerator(new FLA_ChunkGeneratorAbstract_Paper(chunkManager, this.nmsWorld.getSeed(),
-                            h, this.configValues, this.originalGenerator));
+                            h, this.configValues, this.originalGenerator, divisor));
                 } else {
                     enabled = setGenerator(new FLA_ChunkGeneratorAbstract(chunkManager, this.nmsWorld.getSeed(), h,
-                            this.configValues, this.originalGenerator));
+                            this.configValues, this.originalGenerator, divisor));
                 }
 
             } catch (Exception e) {

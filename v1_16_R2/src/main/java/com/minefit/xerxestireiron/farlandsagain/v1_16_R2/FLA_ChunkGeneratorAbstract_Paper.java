@@ -114,20 +114,20 @@ public final class FLA_ChunkGeneratorAbstract_Paper extends ChunkGenerator {
     private boolean mobH;
 
     public FLA_ChunkGeneratorAbstract_Paper(WorldChunkManager worldchunkmanager, long i, Supplier<GeneratorSettingBase> supplier) {
-        this(worldchunkmanager, worldchunkmanager, i, supplier, null, null);
+        this(worldchunkmanager, worldchunkmanager, i, supplier, null, null, 4);
     }
 
-    public FLA_ChunkGeneratorAbstract_Paper(WorldChunkManager worldchunkmanager, long i,  Supplier<GeneratorSettingBase> supplier, ConfigValues configValues, ChunkGenerator originalGenerator) {
-        this(worldchunkmanager, worldchunkmanager, i, supplier, configValues, originalGenerator);
+    public FLA_ChunkGeneratorAbstract_Paper(WorldChunkManager worldchunkmanager, long i,  Supplier<GeneratorSettingBase> supplier, ConfigValues configValues, ChunkGenerator originalGenerator, int divisor) {
+        this(worldchunkmanager, worldchunkmanager, i, supplier, configValues, originalGenerator, divisor);
     }
 
-    private FLA_ChunkGeneratorAbstract_Paper(WorldChunkManager worldchunkmanager, WorldChunkManager worldchunkmanager1, long i,  Supplier<GeneratorSettingBase> supplier, ConfigValues configValues, ChunkGenerator originalGenerator) {
+    private FLA_ChunkGeneratorAbstract_Paper(WorldChunkManager worldchunkmanager, WorldChunkManager worldchunkmanager1, long i,  Supplier<GeneratorSettingBase> supplier, ConfigValues configValues, ChunkGenerator originalGenerator, int divisor) {
         super(worldchunkmanager, worldchunkmanager1, ((GeneratorSettingBase) supplier.get()).a(), i);
         this.configValues = configValues;
-        this.lowX = this.configValues.farLandsLowX / 4;
-        this.lowZ = this.configValues.farLandsLowZ / 4;
-        this.highX = this.configValues.farLandsHighX / 4;
-        this.highZ = this.configValues.farLandsHighZ / 4;
+        this.lowX = this.configValues.farLandsLowX / divisor;
+        this.lowZ = this.configValues.farLandsLowZ / divisor;
+        this.highX = this.configValues.farLandsHighX / divisor;
+        this.highZ = this.configValues.farLandsHighZ / divisor;
         this.w = i;
         GeneratorSettingBase generatorsettingbase = (GeneratorSettingBase) supplier.get();
 
