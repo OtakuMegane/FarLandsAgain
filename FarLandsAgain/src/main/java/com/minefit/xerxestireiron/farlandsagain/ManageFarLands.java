@@ -21,19 +21,19 @@ public class ManageFarLands {
 
         if (this.plugin.version.equals("v1_12_R1")) {
             this.LF12R1 = new com.minefit.xerxestireiron.farlandsagain.v1_12_R1.LoadFarlands(this.world, worldConfig,
-                    this.plugin.getName());
+                    this.plugin.isPaper(), this.plugin.getName());
         } else if (this.plugin.version.equals("v1_14_R1")) {
             this.LF14R1 = new com.minefit.xerxestireiron.farlandsagain.v1_14_R1.LoadFarlands(this.world, worldConfig,
-                    this.plugin.getName());
+                    this.plugin.isPaper(), this.plugin.getName());
         } else if (this.plugin.version.equals("v1_15_R1")) {
             this.LF15R1 = new com.minefit.xerxestireiron.farlandsagain.v1_15_R1.LoadFarlands(this.world, worldConfig,
-                    this.plugin.getName());
+                    this.plugin.isPaper(), this.plugin.getName());
         } else if (this.plugin.version.equals("v1_16_R1")) {
             this.LF16R1 = new com.minefit.xerxestireiron.farlandsagain.v1_16_R1.LoadFarlands(this.world, worldConfig,
-                    this.plugin.getName());
+                    this.plugin.isPaper(), this.plugin.getName());
         } else if (this.plugin.version.equals("v1_16_R2")) {
             this.LF16R2 = new com.minefit.xerxestireiron.farlandsagain.v1_16_R2.LoadFarlands(this.world, worldConfig,
-                    this.plugin.getName());
+                    this.plugin.isPaper(), this.plugin.getName());
         }
     }
 

@@ -1,6 +1,5 @@
 package com.minefit.xerxestireiron.farlandsagain.v1_16_R1;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class ConfigValues {
@@ -12,9 +11,9 @@ public class ConfigValues {
     public final int farLandsHighX;
     public final int farLandsHighZ;
 
-    public ConfigValues(String worldName, ConfigurationSection worldConfig) {
+    public ConfigValues(String worldName, ConfigurationSection worldConfig, boolean isPaper) {
         this.worldConfig = worldConfig;
-        this.paperSpigot = new PaperSpigot(worldName, Bukkit.getName().contains("Paper"));
+        this.paperSpigot = new PaperSpigot(worldName, isPaper);
         this.farLandsLowX = this.worldConfig.getInt("lowX", -12550824);
         this.farLandsLowZ = this.worldConfig.getInt("lowZ", -12550824);
         this.farLandsHighX = this.worldConfig.getInt("highX", 12550824);

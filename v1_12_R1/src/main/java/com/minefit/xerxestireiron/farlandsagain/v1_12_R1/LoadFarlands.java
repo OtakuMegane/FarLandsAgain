@@ -26,14 +26,16 @@ public class LoadFarlands {
     public final ConfigValues configValues;
     private boolean enabled = false;
     private String worldType;
+    private final boolean isPaper;
 
-    public LoadFarlands(World world, ConfigurationSection worldConfig, String pluginName) {
+    public LoadFarlands(World world, ConfigurationSection worldConfig, boolean isPaper, String pluginName) {
         this.world = world;
         this.worldConfig = worldConfig;
         this.worldName = this.world.getName();
+        this.isPaper = isPaper;
         this.nmsWorld = ((CraftWorld) world).getHandle();
         this.messages = new Messages(pluginName);
-        this.configValues = new ConfigValues(this.worldName, this.worldConfig);
+        this.configValues = new ConfigValues(this.worldName, this.worldConfig, this.isPaper);
         this.chunkServer = this.nmsWorld.getChunkProviderServer();
         this.originalGenerator = this.chunkServer.chunkGenerator;
         this.originalGenName = this.originalGenerator.getClass().getSimpleName();

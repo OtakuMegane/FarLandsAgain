@@ -2,7 +2,6 @@ package com.minefit.xerxestireiron.farlandsagain.v1_16_R1;
 
 import java.lang.reflect.Field;
 
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.configuration.ConfigurationSection;
@@ -28,17 +27,18 @@ public class LoadFarlands {
     public final ConfigValues configValues;
     private boolean isPaper;
 
-    public LoadFarlands(World world, ConfigurationSection worldConfig, String pluginName) {
+    public LoadFarlands(World world, ConfigurationSection worldConfig, boolean isPaper, String pluginName) {
         this.world = world;
         this.worldConfig = worldConfig;
         this.worldName = this.world.getName();
+        this.isPaper = isPaper;
         this.nmsWorld = ((CraftWorld) world).getHandle();
         this.messages = new Messages(pluginName);
-        this.configValues = new ConfigValues(this.worldName, this.worldConfig);
+        this.configValues = new ConfigValues(this.worldName, this.worldConfig, this.isPaper);
         this.chunkServer = (ChunkProviderServer) this.nmsWorld.getChunkProvider();
         this.originalGenerator = this.chunkServer.getChunkGenerator();
         this.originalGenName = this.originalGenerator.getClass().getSimpleName();
-        this.isPaper = Bukkit.getName().contains("Paper");
+
         overrideGenerator();
     }
 

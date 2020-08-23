@@ -1,12 +1,8 @@
 package com.minefit.xerxestireiron.farlandsagain.v1_16_R2;
 
 import java.lang.reflect.Field;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import java.util.function.Supplier;
 
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.configuration.ConfigurationSection;
@@ -16,23 +12,8 @@ import com.minefit.xerxestireiron.farlandsagain.Messages;
 
 import net.minecraft.server.v1_16_R2.ChunkProviderServer;
 import net.minecraft.server.v1_16_R2.GeneratorSettingBase;
-import net.minecraft.server.v1_16_R2.IRegistry;
-import net.minecraft.server.v1_16_R2.MinecraftKey;
-import net.minecraft.server.v1_16_R2.RegistryGeneration;
-import net.minecraft.server.v1_16_R2.ResourceKey;
-import net.minecraft.server.v1_16_R2.StructureFeatures;
-import net.minecraft.server.v1_16_R2.BiomeBase;
-import net.minecraft.server.v1_16_R2.BiomeDecoratorGroups;
-import net.minecraft.server.v1_16_R2.BiomeRegistry;
-import net.minecraft.server.v1_16_R2.BiomeSettingsGeneration;
-import net.minecraft.server.v1_16_R2.Biomes;
 import net.minecraft.server.v1_16_R2.ChunkGenerator;
 import net.minecraft.server.v1_16_R2.WorldChunkManager;
-import net.minecraft.server.v1_16_R2.WorldGenCarvers;
-import net.minecraft.server.v1_16_R2.WorldGenFeatureCompositeConfiguration;
-import net.minecraft.server.v1_16_R2.WorldGenFeatureConfigured;
-import net.minecraft.server.v1_16_R2.WorldGenStage;
-import net.minecraft.server.v1_16_R2.WorldGenSurfaceComposites;
 import net.minecraft.server.v1_16_R2.WorldServer;
 
 public class LoadFarlands {
@@ -47,17 +28,17 @@ public class LoadFarlands {
     public final ConfigValues configValues;
     private boolean isPaper;
 
-    public LoadFarlands(World world, ConfigurationSection worldConfig, String pluginName) {
+    public LoadFarlands(World world, ConfigurationSection worldConfig, boolean isPaper, String pluginName) {
         this.world = world;
         this.worldConfig = worldConfig;
         this.worldName = this.world.getName();
+        this.isPaper = isPaper;
         this.nmsWorld = ((CraftWorld) world).getHandle();
         this.messages = new Messages(pluginName);
-        this.configValues = new ConfigValues(this.worldName, this.worldConfig);
+        this.configValues = new ConfigValues(this.worldName, this.worldConfig, this.isPaper);
         this.chunkServer = (ChunkProviderServer) this.nmsWorld.getChunkProvider();
         this.originalGenerator = this.chunkServer.getChunkGenerator();
         this.originalGenName = this.originalGenerator.getClass().getSimpleName();
-        this.isPaper = Bukkit.getName().contains("Paper");
         overrideGenerator();
     }
 

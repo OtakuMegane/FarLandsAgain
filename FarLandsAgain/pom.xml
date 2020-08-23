@@ -7,7 +7,7 @@
 		<version>1.0</version>
 	</parent>
 	<artifactId>farlandsagain</artifactId>
-	<version>v2.4</version>
+	<version>v2.4.1</version>
 	<name>FarLandsAgain</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

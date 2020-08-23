@@ -45,7 +45,12 @@ public class FarLandsAgain extends JavaPlugin implements Listener {
     }
 
     public boolean isPaper() {
-        return Bukkit.getName().contains("Paper");
+        try {
+            Class.forName("com.destroystokyo.paper.PaperConfig");
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
     }
 
     @Override
