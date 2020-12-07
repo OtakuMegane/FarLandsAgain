@@ -9,6 +9,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 
 import com.minefit.xerxestireiron.farlandsagain.Messages;
+import com.minefit.xerxestireiron.farlandsagain.ReflectionHelper;
 
 import net.minecraft.server.v1_12_R1.ChunkGenerator;
 import net.minecraft.server.v1_12_R1.ChunkProviderServer;
@@ -74,11 +75,9 @@ public class LoadFarlands {
         }
 
         if (environment == Environment.NORMAL) {
-            if (this.worldType.equals("default")) {
                 FLAChunkProviderGenerate generator = new FLAChunkProviderGenerate(this.nmsWorld, worldSeed, genFeatures,
                         genOptions, this.configValues);
                 this.enabled = setGenerator(generator);
-            }
         } else if (environment == Environment.NETHER) {
             FLAChunkProviderHell generator = new FLAChunkProviderHell(this.nmsWorld, genFeatures, worldSeed,
                     this.configValues);
@@ -115,20 +114,12 @@ public class LoadFarlands {
         try {
             Field chunkGenerator = this.chunkServer.getClass().getDeclaredField("chunkGenerator");
             chunkGenerator.setAccessible(true);
-            setFinal(chunkGenerator, this.chunkServer, generator);
+            ReflectionHelper.setFinal(chunkGenerator, this.chunkServer, generator);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
 
         return true;
-    }
-
-    private void setFinal(Field field, Object instance, Object obj) throws Exception {
-        field.setAccessible(true);
-        Field modifiers = Field.class.getDeclaredField("modifiers");
-        modifiers.setAccessible(true);
-        modifiers.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-        field.set(instance, obj);
     }
 }

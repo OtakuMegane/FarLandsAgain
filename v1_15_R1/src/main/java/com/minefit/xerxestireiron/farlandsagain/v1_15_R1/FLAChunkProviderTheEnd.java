@@ -2,6 +2,8 @@ package com.minefit.xerxestireiron.farlandsagain.v1_15_R1;
 
 import java.lang.reflect.Field;
 
+import com.minefit.xerxestireiron.farlandsagain.ReflectionHelper;
+
 import net.minecraft.server.v1_15_R1.ChunkGenerator;
 import net.minecraft.server.v1_15_R1.ChunkProviderTheEnd;
 import net.minecraft.server.v1_15_R1.GeneratorAccess;
