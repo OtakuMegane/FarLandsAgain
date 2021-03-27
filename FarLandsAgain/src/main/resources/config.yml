@@ -7,15 +7,15 @@
 # Example config set up:
 #
 # worlds:
-#   world1:
+#   world:
 #     enabled: true
 #     lowX: -12550824
 #     lowZ: -12550824
 #     highX: 12550824
 #     highZ: 12550824
-#   world1_nether:
+#   world_nether:
 #     enabled: true
-#   world1_the_end:
+#   world_the_end:
 #     enabled: false
 
 worlds:
