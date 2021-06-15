@@ -155,9 +155,17 @@ public class FLA_NoiseGeneratorOctaves implements NoiseGenerator {
         return this.noiseLevels[this.noiseLevels.length - 1 - i];
     }
 
-    public static double a(double d0) { // Screws up the gen. Is this really correct?
-        return d0;
-        //return d0 - (double) MathHelper.c(d0 / 3.3554432E7D + 0.5D) * 3.3554432E7D;
+    public static double a(double d0) {
+        return d0 - (double) MathHelper.c(d0 / 3.3554432E7D + 0.5D) * 3.3554432E7D;
+    }
+
+    // FarLandsAgain: If noClamp is true it allows the overflow
+    public static double a(double d0, boolean noClamp) {
+        if(noClamp) {
+            return d0;
+        }
+
+        return d0 - (double) MathHelper.c(d0 / 3.3554432E7D + 0.5D) * 3.3554432E7D;
     }
 
     @Override
