@@ -1,27 +1,25 @@
 package com.minefit.xerxestireiron.farlandsagain.v1_17_R1;
 
 import java.util.stream.IntStream;
-
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.RandomSource;
-import net.minecraft.world.level.levelgen.synth.NoiseGeneratorOctaves;
-import net.minecraft.world.level.levelgen.synth.NoiseGeneratorPerlin;
+import net.minecraft.world.level.levelgen.synth.ImprovedNoise;
+import net.minecraft.world.level.levelgen.synth.PerlinNoise;
 
 public class FLA_BlendedNoise {
-
-    private final NoiseGeneratorOctaves minLimitNoise;
-    private final NoiseGeneratorOctaves maxLimitNoise;
-    private final NoiseGeneratorOctaves mainNoise;
+	private final PerlinNoise minLimitNoise;
+	private final PerlinNoise maxLimitNoise;
+	private final PerlinNoise mainNoise;
     private final ConfigValues configValues;
     private final int lowX;
     private final int lowZ;
     private final int highX;
     private final int highZ;
 
-    public FLA_BlendedNoise(NoiseGeneratorOctaves noisegeneratoroctaves, NoiseGeneratorOctaves noisegeneratoroctaves1, NoiseGeneratorOctaves noisegeneratoroctaves2, ConfigValues configValues, int divisor) {
-        this.minLimitNoise = noisegeneratoroctaves;
-        this.maxLimitNoise = noisegeneratoroctaves1;
-        this.mainNoise = noisegeneratoroctaves2;
+	public FLA_BlendedNoise(PerlinNoise var0, PerlinNoise var1, PerlinNoise var2, ConfigValues configValues, int divisor) {
+		this.minLimitNoise = var0;
+		this.maxLimitNoise = var1;
+		this.mainNoise = var2;
         this.configValues = configValues;
 
         if(this.configValues != null) {
@@ -35,81 +33,75 @@ public class FLA_BlendedNoise {
             this.lowX = Integer.MIN_VALUE;
             this.lowZ = Integer.MIN_VALUE;
         }
-    }
+	}
 
-    public FLA_BlendedNoise(NoiseGeneratorOctaves noisegeneratoroctaves, NoiseGeneratorOctaves noisegeneratoroctaves1, NoiseGeneratorOctaves noisegeneratoroctaves2) {
-        //this.minLimitNoise = noisegeneratoroctaves;
-        //this.maxLimitNoise = noisegeneratoroctaves1;
-        //this.mainNoise = noisegeneratoroctaves2;
-        this(noisegeneratoroctaves2, noisegeneratoroctaves2, noisegeneratoroctaves2, null, 4);
-    }
+	public FLA_BlendedNoise(RandomSource var0) {
+		this(new PerlinNoise(var0, IntStream.rangeClosed(-15, 0)), new PerlinNoise(var0, IntStream.rangeClosed(-15, 0)),
+				new PerlinNoise(var0, IntStream.rangeClosed(-7, 0)), null, 4);
+	}
 
-    public FLA_BlendedNoise(RandomSource randomsource) {
-        this(new NoiseGeneratorOctaves(randomsource, IntStream.rangeClosed(-15, 0)), new NoiseGeneratorOctaves(randomsource, IntStream.rangeClosed(-15, 0)), new NoiseGeneratorOctaves(randomsource, IntStream.rangeClosed(-7, 0)));
-    }
-
-    public double a(int i, int j, int k, double d0, double d1, double d2, double d3) {
-        double d4 = 0.0D;
-        double d5 = 0.0D;
-        double d6 = 0.0D;
-        boolean flag = true;
-        double d7 = 1.0D;
+	public double sampleAndClampNoise(int var0, int var1, int var2, double var3, double var5, double var7,
+			double var9) {
+		double var11 = 0.0D;
+		double var13 = 0.0D;
+		double var15 = 0.0D;
+		boolean var17 = true;
+		double var18 = 1.0D;
 
         // FarLandsAgain: We inject a multiplier to force the integer overflow
-        int iMultiX = 1;
-        int kMultiZ = 1;
+        int MultiX = 1;
+        int MultiZ = 1;
 
-        if (i >= this.highX || i <= this.lowX) {
-            iMultiX = 3137706;
+        if (var0 >= this.highX || var0 <= this.lowX) {
+            MultiX = 3137706;
         }
 
-        if (k >= this.highZ || k <= this.lowZ) {
-            kMultiZ = 3137706;
+        if (var2 >= this.highZ || var2 <= this.lowZ) {
+            MultiZ = 3137706;
         }
 
-        for (int l = 0; l < 8; ++l) {
-            NoiseGeneratorPerlin noisegeneratorperlin = this.mainNoise.a(l);
+		for (int var20 = 0; var20 < 8; ++var20) {
+			ImprovedNoise var21 = this.mainNoise.getOctaveNoise(var20);
+			if (var21 != null) {
+				var15 += var21.noise(PerlinNoise.wrap((double) var0 * var7 * var18),
+						PerlinNoise.wrap((double) var1 * var9 * var18), PerlinNoise.wrap((double) var2 * var7 * var18),
+						var9 * var18, (double) var1 * var9 * var18) / var18;
+			}
 
-            if (noisegeneratorperlin != null) {
-                d6 += noisegeneratorperlin.a(NoiseGeneratorOctaves.a((double) i * d2 * d7), NoiseGeneratorOctaves.a((double) j * d3 * d7), NoiseGeneratorOctaves.a((double) k * d2 * d7), d3 * d7, (double) j * d3 * d7) / d7;
-            }
+			var18 /= 2.0D;
+		}
 
-            d7 /= 2.0D;
-        }
+		double var20 = (var15 / 10.0D + 1.0D) / 2.0D;
+		boolean var22 = var20 >= 1.0D;
+		boolean var23 = var20 <= 0.0D;
+		var18 = 1.0D;
 
-        double d8 = (d6 / 10.0D + 1.0D) / 2.0D;
-        boolean flag1 = d8 >= 1.0D;
-        boolean flag2 = d8 <= 0.0D;
+		for (int var24 = 0; var24 < 16; ++var24) {
+			double var25 = PerlinNoise.wrap((double) var0 * var3 * var18);
+			double var27 = PerlinNoise.wrap((double) var1 * var5 * var18);
+			double var29 = PerlinNoise.wrap((double) var2 * var3 * var18);
+			double var31 = var5 * var18;
+			ImprovedNoise var33;
 
-        d7 = 1.0D;
+            // FarLandsAgain: Inject extra multiplier here. This is so we can control where the Far Lands start.
+            // Otherwise we would just block the clamping in PerlinNoise.wrap(double)
+			if (!var22) {
+				var33 = this.minLimitNoise.getOctaveNoise(var24);
+				if (var33 != null) {
+					var11 += var33.noise(var25 * MultiX, var27, var29 * MultiZ, var31, (double) var1 * var31) / var18;
+				}
+			}
 
-        for (int i1 = 0; i1 < 16; ++i1) {
-            double d9 = NoiseGeneratorOctaves.a((double) i * d0 * d7);
-            double d10 = NoiseGeneratorOctaves.a((double) j * d1 * d7);
-            double d11 = NoiseGeneratorOctaves.a((double) k * d0 * d7);
-            double d12 = d1 * d7;
-            NoiseGeneratorPerlin noisegeneratorperlin1;
+			if (!var23) {
+				var33 = this.maxLimitNoise.getOctaveNoise(var24);
+				if (var33 != null) {
+					var13 += var33.noise(var25 * MultiX, var27, var29 * MultiZ, var31, (double) var1 * var31) / var18;
+				}
+			}
 
-            // Inject extra multiplier here. This is so we can control where the Far Lands start.
-            // Otherwise we would just undo the clamping in NoiseGeneratorOctaves.a(double)
-            if (!flag1) {
-                noisegeneratorperlin1 = this.minLimitNoise.a(i1);
-                if (noisegeneratorperlin1 != null) {
-                    d4 += noisegeneratorperlin1.a(d9 * iMultiX, d10, d11 * kMultiZ, d12, (double) j * d12) / d7;
-                }
-            }
+			var18 /= 2.0D;
+		}
 
-            if (!flag2) {
-                noisegeneratorperlin1 = this.maxLimitNoise.a(i1);
-                if (noisegeneratorperlin1 != null) {
-                    d5 += noisegeneratorperlin1.a(d9 * iMultiX, d10, d11 * kMultiZ, d12, (double) j * d12) / d7;
-                }
-            }
-
-            d7 /= 2.0D;
-        }
-
-        return MathHelper.b(d4 / 512.0D, d5 / 512.0D, d8);
-    }
+		return Mth.clampedLerp(var11 / 512.0D, var13 / 512.0D, var20);
+	}
 }
-
