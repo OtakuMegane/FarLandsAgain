@@ -3,10 +3,11 @@ package com.minefit.xerxestireiron.farlandsagain.v1_17_R1;
 import java.util.stream.IntStream;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.RandomSource;
+import net.minecraft.world.level.levelgen.synth.BlendedNoise;
 import net.minecraft.world.level.levelgen.synth.ImprovedNoise;
 import net.minecraft.world.level.levelgen.synth.PerlinNoise;
 
-public class FLA_BlendedNoise {
+public class FLA_BlendedNoise extends BlendedNoise {
 	private final PerlinNoise minLimitNoise;
 	private final PerlinNoise maxLimitNoise;
 	private final PerlinNoise mainNoise;
@@ -17,6 +18,7 @@ public class FLA_BlendedNoise {
     private final int highZ;
 
 	public FLA_BlendedNoise(PerlinNoise var0, PerlinNoise var1, PerlinNoise var2, ConfigValues configValues, int divisor) {
+	    super(var0, var1, var2);
 		this.minLimitNoise = var0;
 		this.maxLimitNoise = var1;
 		this.mainNoise = var2;

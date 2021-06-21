@@ -59,4 +59,13 @@ public class Messages {
         this.logger.info("[" + this.pluginName + " Error] Flatlands generator detected for '" + worldName + "'.");
         this.logger.info("[" + this.pluginName + " Error] Far Lands do not generate in flat worlds.");
     }
+
+    public void unknownNoise(String worldName, String noiseName) {
+        this.logger.info(
+                "[" + this.pluginName + " Error] The world '" + worldName + "' does not have a recognized noise generator.");
+        this.logger.info("[" + this.pluginName
+                + " Error] The original may have been modified, replaced or Mojang changed something.");
+        this.logger.info("[" + this.pluginName + " Error] The noise generator detected is: '" + noiseName + "'.");
+        this.logger.info("[" + this.pluginName + " Error] To avoid possible conflicts, FarLandsAgain will not be enabled on this world.");
+    }
 }

@@ -73,22 +73,29 @@ public class LoadFarlands {
                 Field blendedNoiseField = ReflectionHelper.getField(sampler.getClass(), "h", true);
                 blendedNoiseField.setAccessible(true);
                 BlendedNoise blendedNoise = (BlendedNoise) blendedNoiseField.get(sampler);
+                String blendedNoiseName = blendedNoise.getClass().getSimpleName();
 
-                Field minLimitNoiseField = ReflectionHelper.getField(blendedNoise.getClass(), "a", true);
-                minLimitNoiseField.setAccessible(true);
-                PerlinNoise minLimitNoise = (PerlinNoise) minLimitNoiseField.get(blendedNoise);
+                if (blendedNoiseName.equals("BlendedNoise")) {
+                    Field minLimitNoiseField = ReflectionHelper.getField(blendedNoise.getClass(), "a", true);
+                    minLimitNoiseField.setAccessible(true);
+                    PerlinNoise minLimitNoise = (PerlinNoise) minLimitNoiseField.get(blendedNoise);
 
-                Field maxLimitNoiseField = ReflectionHelper.getField(blendedNoise.getClass(), "b", true);
-                maxLimitNoiseField.setAccessible(true);
-                PerlinNoise maxLimitNoise = (PerlinNoise) maxLimitNoiseField.get(blendedNoise);
+                    Field maxLimitNoiseField = ReflectionHelper.getField(blendedNoise.getClass(), "b", true);
+                    maxLimitNoiseField.setAccessible(true);
+                    PerlinNoise maxLimitNoise = (PerlinNoise) maxLimitNoiseField.get(blendedNoise);
 
-                Field mainNoiseField = ReflectionHelper.getField(blendedNoise.getClass(), "c", true);
-                mainNoiseField.setAccessible(true);
-                PerlinNoise mainNoise = (PerlinNoise) mainNoiseField.get(blendedNoise);
+                    Field mainNoiseField = ReflectionHelper.getField(blendedNoise.getClass(), "c", true);
+                    mainNoiseField.setAccessible(true);
+                    PerlinNoise mainNoise = (PerlinNoise) mainNoiseField.get(blendedNoise);
 
-                FLA_BlendedNoise newBlendedNoise = new FLA_BlendedNoise(minLimitNoise, maxLimitNoise, mainNoise, this.configValues, divisor);
-                ReflectionHelper.setFinal(blendedNoiseField, sampler, newBlendedNoise);
-                enabled = true;
+                    FLA_BlendedNoise newBlendedNoise = new FLA_BlendedNoise(minLimitNoise, maxLimitNoise, mainNoise,
+                            this.configValues, divisor);
+                    ReflectionHelper.setFinal(blendedNoiseField, sampler, newBlendedNoise);
+                    enabled = true;
+                } else {
+                    this.messages.unknownNoise(worldName, blendedNoiseName);
+                    return;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 enabled = false;
