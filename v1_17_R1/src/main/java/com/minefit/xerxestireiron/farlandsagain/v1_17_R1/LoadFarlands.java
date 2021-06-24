@@ -90,14 +90,14 @@ public class LoadFarlands {
 
                     FLA_BlendedNoise newBlendedNoise = new FLA_BlendedNoise(minLimitNoise, maxLimitNoise, mainNoise,
                             this.configValues, divisor);
-                    ReflectionHelper.setFinal(blendedNoiseField, sampler, newBlendedNoise);
+                    ReflectionHelper.fieldSetter(blendedNoiseField, sampler, newBlendedNoise);
                     enabled = true;
                 } else {
                     this.messages.unknownNoise(worldName, blendedNoiseName);
                     return;
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Throwable t) {
+                t.printStackTrace();
                 enabled = false;
             }
         }

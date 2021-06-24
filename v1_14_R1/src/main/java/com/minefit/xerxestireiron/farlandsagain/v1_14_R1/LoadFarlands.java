@@ -147,14 +147,14 @@ public class LoadFarlands {
         try {
             Field chunkGenerator = ReflectionHelper.getField(this.chunkServer.getClass(), "chunkGenerator", true);
             chunkGenerator.setAccessible(true);
-            ReflectionHelper.setFinal(chunkGenerator, this.chunkServer, generator);
+            ReflectionHelper.fieldSetter(chunkGenerator, this.chunkServer, generator);
 
             Field chunkMapGenerator = ReflectionHelper.getField(this.chunkServer.playerChunkMap.getClass(),
                     "chunkGenerator", true);
             chunkMapGenerator.setAccessible(true);
-            ReflectionHelper.setFinal(chunkMapGenerator, this.chunkServer.playerChunkMap, generator);
-        } catch (Exception e) {
-            e.printStackTrace();
+            ReflectionHelper.fieldSetter(chunkMapGenerator, this.chunkServer.playerChunkMap, generator);
+        } catch (Throwable t) {
+            t.printStackTrace();
             return false;
         }
 

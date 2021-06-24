@@ -114,9 +114,9 @@ public class LoadFarlands {
         try {
             Field chunkGenerator = this.chunkServer.getClass().getDeclaredField("chunkGenerator");
             chunkGenerator.setAccessible(true);
-            ReflectionHelper.setFinal(chunkGenerator, this.chunkServer, generator);
-        } catch (Exception e) {
-            e.printStackTrace();
+            ReflectionHelper.fieldSetter(chunkGenerator, this.chunkServer, generator);
+        } catch (Throwable t) {
+            t.printStackTrace();
             return false;
         }
 
