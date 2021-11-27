@@ -14,6 +14,7 @@ public class ManageFarLands {
     private com.minefit.xerxestireiron.farlandsagain.v1_16_R2.LoadFarlands LF16R2;
     private com.minefit.xerxestireiron.farlandsagain.v1_16_R3.LoadFarlands LF16R3;
     private com.minefit.xerxestireiron.farlandsagain.v1_17_R1.LoadFarlands LF17R1;
+    private com.minefit.xerxestireiron.farlandsagain.v1_18_R1.LoadFarlands LF18R1;
 
     public ManageFarLands(World world, FarLandsAgain instance) {
         this.plugin = instance;
@@ -42,6 +43,9 @@ public class ManageFarLands {
         } else if (this.plugin.version.equals("v1_17_R1")) {
             this.LF17R1 = new com.minefit.xerxestireiron.farlandsagain.v1_17_R1.LoadFarlands(this.world, worldConfig,
                     this.plugin.isPaper(), this.plugin.getName());
+        } else if (this.plugin.version.equals("v1_18_R1")) {
+            this.LF18R1 = new com.minefit.xerxestireiron.farlandsagain.v1_18_R1.LoadFarlands(this.world, worldConfig,
+                    this.plugin.isPaper(), this.plugin.getName());
         }
     }
 
@@ -62,6 +66,8 @@ public class ManageFarLands {
             this.LF16R3.restoreGenerator();
         } else if (this.plugin.version.equals("v1_17_R1")) {
             this.LF17R1.restoreGenerator();
+        } else if (this.plugin.version.equals("v1_18_R1")) {
+            this.LF18R1.restoreGenerator();
         }
     }
 }
