@@ -1,17 +1,15 @@
 package com.minefit.xerxestireiron.farlandsagain.v1_18_R1;
 
-import java.util.stream.IntStream;
-
 import com.google.common.annotations.VisibleForTesting;
 
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.levelgen.NoiseChunk.NoiseFiller;
 import net.minecraft.world.level.levelgen.NoiseSamplingSettings;
 import net.minecraft.world.level.levelgen.RandomSource;
+import net.minecraft.world.level.levelgen.synth.BlendedNoise;
 import net.minecraft.world.level.levelgen.synth.ImprovedNoise;
 import net.minecraft.world.level.levelgen.synth.PerlinNoise;
 
-public class FLA_BlendedNoise implements NoiseFiller {
+public class FLA_BlendedNoise extends BlendedNoise {
     private final PerlinNoise minLimitNoise;
     private final PerlinNoise maxLimitNoise;
     private final PerlinNoise mainNoise;
@@ -28,8 +26,8 @@ public class FLA_BlendedNoise implements NoiseFiller {
     private final int highZ;
 
     public FLA_BlendedNoise(PerlinNoise var0, PerlinNoise var1, PerlinNoise var2, NoiseSamplingSettings var3, int var4,
-            int var5, ConfigValues configValues, int divisor) {
-        //super(randomSource, var3, var5, var5);
+            int var5, RandomSource randomSource, ConfigValues configValues, int divisor) {
+        super(randomSource, var3, var5, var5);
         this.minLimitNoise = var0;
         this.maxLimitNoise = var1;
         this.mainNoise = var2;
@@ -43,23 +41,16 @@ public class FLA_BlendedNoise implements NoiseFiller {
         this.configValues = configValues;
 
         if(this.configValues != null) {
-            this.highX = configValues.farLandsHighX / divisor;
-            this.highZ = configValues.farLandsHighZ / divisor;
-            this.lowX = configValues.farLandsLowX / divisor;
-            this.lowZ = configValues.farLandsLowZ / divisor;
+            this.highX = configValues.farLandsHighX / 1;
+            this.highZ = configValues.farLandsHighZ / 1;
+            this.lowX = configValues.farLandsLowX / 1;
+            this.lowZ = configValues.farLandsLowZ / 1;
         } else {
             this.highX = Integer.MAX_VALUE;
             this.highZ = Integer.MAX_VALUE;
             this.lowX = Integer.MIN_VALUE;
             this.lowZ = Integer.MIN_VALUE;
         }
-    }
-
-    @SuppressWarnings("deprecation")
-    public FLA_BlendedNoise(RandomSource var0, NoiseSamplingSettings var1, int var2, int var3) {
-        this(PerlinNoise.createLegacyForBlendedNoise(var0, IntStream.rangeClosed(-15, 0)),
-                PerlinNoise.createLegacyForBlendedNoise(var0, IntStream.rangeClosed(-15, 0)),
-                PerlinNoise.createLegacyForBlendedNoise(var0, IntStream.rangeClosed(-7, 0)), var1, var2, var3, null, 0);
     }
 
     @SuppressWarnings("deprecation")

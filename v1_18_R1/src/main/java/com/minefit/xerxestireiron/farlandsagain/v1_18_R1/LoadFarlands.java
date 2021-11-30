@@ -16,6 +16,8 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseSampler;
 import net.minecraft.world.level.levelgen.NoiseSamplingSettings;
+import net.minecraft.world.level.levelgen.RandomSource;
+import net.minecraft.world.level.levelgen.WorldgenRandom.Algorithm;
 import net.minecraft.world.level.levelgen.synth.BlendedNoise;
 import net.minecraft.world.level.levelgen.synth.PerlinNoise;
 
@@ -52,6 +54,7 @@ public class LoadFarlands {
     }
 
     public void modifyGenerator() {
+        System.out.println("modifying");
         Environment environment = this.world.getEnvironment();
         boolean enabled = false;
 
@@ -67,6 +70,9 @@ public class LoadFarlands {
             //int divisor = (environment == Environment.THE_END) ? 8 : 4;
             int divisor = (environment == Environment.THE_END) ? 8 : 1;
             NoiseBasedChunkGenerator noiseBasedChunkGenerator = (NoiseBasedChunkGenerator) this.originalGenerator;
+            Algorithm al = noiseBasedChunkGenerator.settings.get().getRandomSource();
+            // This is as good as we got for now. Still not sure it matters given how it's used.
+            RandomSource randomSource = al.newInstance(this.nmsWorld.getSeed());
             NoiseSamplingSettings noiseSamplingSettings = noiseBasedChunkGenerator.settings.get().noiseSettings()
                     .noiseSamplingSettings();
             NoiseSampler noiseSampler = (NoiseSampler) noiseBasedChunkGenerator.climateSampler();
@@ -99,7 +105,7 @@ public class LoadFarlands {
                     int cellHeight = cellHeightField.getInt(blendedNoise);
 
                     FLA_BlendedNoise newBlendedNoise = new FLA_BlendedNoise(minLimitNoise, maxLimitNoise, mainNoise,
-                            noiseSamplingSettings, cellWidth, cellHeight, this.configValues, divisor);
+                            noiseSamplingSettings, cellWidth, cellHeight, randomSource, this.configValues, divisor);
                     ReflectionHelper.fieldSetter(blendedNoiseField, noiseSampler, newBlendedNoise);
                     enabled = true;
                 } else {
