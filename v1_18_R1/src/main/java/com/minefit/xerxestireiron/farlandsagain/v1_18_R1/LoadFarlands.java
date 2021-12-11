@@ -54,7 +54,6 @@ public class LoadFarlands {
     }
 
     public void modifyGenerator() {
-        System.out.println("modifying");
         Environment environment = this.world.getEnvironment();
         boolean enabled = false;
 
